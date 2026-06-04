@@ -1,0 +1,1454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PayablesAI Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f7f8fb;
+    --surface: #ffffff;
+    --surface-hover: #fafbff;
+    --border: #e8eaf0;
+    --border-subtle: #f1f3f8;
+    --text-primary: #0f1117;
+    --text-secondary: #5c6070;
+    --text-muted: #9ba3b5;
+    --accent: #3b5bdb;
+    --accent-light: #eef2ff;
+    --accent-hover: #2f4ac7;
+    --green: #087443;
+    --green-bg: #ecfdf3;
+    --amber: #92400e;
+    --amber-bg: #fffbeb;
+    --red: #991b1b;
+    --red-bg: #fff1f2;
+    --shadow-sm: 0 1px 3px rgba(15,17,23,0.06), 0 1px 2px rgba(15,17,23,0.04);
+    --shadow-md: 0 4px 12px rgba(15,17,23,0.08), 0 2px 6px rgba(15,17,23,0.04);
+    --shadow-lg: 0 12px 32px rgba(15,17,23,0.10), 0 4px 12px rgba(15,17,23,0.06);
+    --radius: 12px;
+    --radius-sm: 8px;
+    --radius-xs: 6px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+    font-size: 14px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 40px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: var(--shadow-sm);
+  }
+  .header-brand { display: flex; align-items: center; gap: 10px; }
+  .header-logo {
+    width: 32px; height: 32px;
+    background: var(--accent);
+    border-radius: var(--radius-xs);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .header-logo svg { width: 18px; height: 18px; }
+  .header-title { font-size: 16px; font-weight: 700; color: var(--text-primary); letter-spacing: -0.3px; }
+  .header-title span { color: var(--accent); }
+  .header-meta { font-size: 12.5px; color: var(--text-muted); font-weight: 500; }
+
+  /* ── MAIN LAYOUT ── */
+  .main {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 32px 40px 60px;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  .section-label {
+    font-size: 11px; font-weight: 600; color: var(--text-muted);
+    letter-spacing: 0.8px; text-transform: uppercase; margin-bottom: 14px;
+  }
+
+  /* ── KPI CARDS ── */
+  .stats { display: none !important; }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px 20px;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+    cursor: default;
+    position: relative;
+    overflow: hidden;
+  }
+  .card::after {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--accent), #7c8ff0);
+    opacity: 0; transition: opacity 0.18s ease;
+  }
+  .card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+  .card:hover::after { opacity: 1; }
+  .card h3 {
+    font-size: 11px; font-weight: 600; color: var(--text-muted);
+    letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 8px;
+  }
+  .card p {
+    font-size: 26px; font-weight: 700; color: var(--text-primary);
+    letter-spacing: -0.5px; line-height: 1; font-family: 'DM Mono', monospace;
+  }
+
+  /* ── KPI SECTION ── */
+  .kpi-section { display: flex; flex-direction: column; gap: 20px; }
+  .kpi-block { display: flex; flex-direction: column; gap: 12px; }
+  .kpi-block-header { display: flex; align-items: baseline; gap: 10px; }
+  .kpi-block-title { font-size: 13px; font-weight: 700; color: var(--text-primary); letter-spacing: -0.1px; }
+  .kpi-block-subtitle { font-size: 12px; color: var(--text-muted); font-weight: 400; }
+  .kpi-grid { display: grid; gap: 14px; }
+  .kpi-grid-4 { grid-template-columns: repeat(4, 1fr); }
+  .kpi-grid-3 { grid-template-columns: repeat(3, 1fr); }
+  .kpi-row-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; align-items: start; }
+  .kpi-sub-block {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 18px 20px 20px; box-shadow: var(--shadow-sm);
+  }
+  .kpi-sub-block .kpi-block-title { font-size: 12.5px; }
+  .kpi-sub-block .card { border: 1px solid var(--border-subtle); box-shadow: none; padding: 14px 16px; }
+  .kpi-sub-block .card:hover { box-shadow: var(--shadow-sm); }
+  .kpi-primary .card-primary { padding: 22px 24px; border: 1px solid var(--border); position: relative; overflow: hidden; }
+  .kpi-primary .card-primary::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--accent) 0%, #7c8ff0 100%);
+  }
+  .kpi-primary .card-primary p { font-size: 30px; letter-spacing: -1px; }
+  .card-icon {
+    width: 32px; height: 32px; border-radius: var(--radius-xs);
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 12px; flex-shrink: 0;
+  }
+  .card-icon-blue { background: var(--accent-light); color: var(--accent); }
+  .card-icon-slate { background: #f1f3f8; color: var(--text-muted); }
+  .card-label { display: block; font-size: 11px; font-weight: 500; color: var(--text-muted); margin-top: 6px; letter-spacing: 0.2px; }
+  .card-status { border-left-width: 3px !important; border-left-style: solid !important; position: relative; padding-left: 14px !important; }
+  .card-green  { border-left-color: #16a34a !important; }
+  .card-amber  { border-left-color: #d97706 !important; }
+  .card-red    { border-left-color: #dc2626 !important; }
+  .card-green h3 { color: #166534; } .card-amber h3 { color: #92400e; } .card-red h3 { color: #991b1b; }
+  .card-green p  { color: #166534; } .card-amber p  { color: #92400e; } .card-red p  { color: #991b1b; }
+  .status-dot { width: 8px; height: 8px; border-radius: 50%; margin-bottom: 10px; }
+  .dot-green { background: #16a34a; box-shadow: 0 0 0 3px #dcfce7; }
+  .dot-amber { background: #d97706; box-shadow: 0 0 0 3px #fef3c7; }
+  .dot-red   { background: #dc2626; box-shadow: 0 0 0 3px #fee2e2; }
+
+  /* ── UPLOAD CARD ── */
+  .upload-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 28px 32px; box-shadow: var(--shadow-sm);
+  }
+  .upload-inner {
+    border: 2px dashed var(--border); border-radius: var(--radius-sm);
+    background: var(--bg); padding: 28px 24px; display: flex; align-items: center;
+    gap: 24px; transition: border-color 0.2s, background 0.2s;
+  }
+  .upload-inner:hover { border-color: var(--accent); background: var(--accent-light); }
+  .upload-icon {
+    width: 48px; height: 48px; background: var(--accent-light);
+    border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .upload-icon svg { color: var(--accent); }
+  .upload-text h4 { font-size: 14px; font-weight: 600; color: var(--text-primary); margin-bottom: 4px; }
+  .upload-text p  { font-size: 12.5px; color: var(--text-muted); }
+  .upload-controls { display: flex; align-items: center; gap: 12px; margin-left: auto; flex-shrink: 0; }
+  #pdfFile { font-size: 13px; color: var(--text-secondary); font-family: 'DM Sans', sans-serif; }
+  #pdfFile::file-selector-button {
+    font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500;
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-xs);
+    padding: 7px 14px; color: var(--text-primary); cursor: pointer; transition: background 0.15s; margin-right: 10px;
+  }
+  #pdfFile::file-selector-button:hover { background: var(--bg); }
+
+  /* ── BUTTONS ── */
+  .btn {
+    font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600;
+    border: none; border-radius: var(--radius-xs); padding: 8px 16px; cursor: pointer;
+    display: inline-flex; align-items: center; gap: 6px;
+    transition: all 0.15s ease; white-space: nowrap;
+  }
+  .btn-primary { background: var(--accent); color: #fff; }
+  .btn-primary:hover { background: var(--accent-hover); transform: translateY(-1px); }
+  .btn-ghost { background: var(--surface); color: var(--text-secondary); border: 1px solid var(--border); }
+  .btn-ghost:hover { background: var(--bg); color: var(--text-primary); }
+  .btn-approve { background: var(--green-bg); color: var(--green); border: 1px solid #a7f3d0; font-size: 12px; padding: 5px 11px; }
+  .btn-approve:hover { background: #d1fae5; transform: translateY(-1px); }
+  .btn-reject  { background: var(--amber-bg); color: var(--amber); border: 1px solid #fde68a; font-size: 12px; padding: 5px 11px; }
+  .btn-reject:hover  { background: #fef3c7; transform: translateY(-1px); }
+  .btn-delete  { background: var(--red-bg); color: var(--red); border: 1px solid #fecaca; font-size: 12px; padding: 5px 11px; }
+  .btn-delete:hover  { background: #fee2e2; transform: translateY(-1px); }
+
+  /* ── FILTER CARD ── */
+  .filter-card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 20px 24px; box-shadow: var(--shadow-sm);
+    display: flex; align-items: center; flex-wrap: wrap; gap: 12px;
+  }
+  .filter-card .filter-group { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; flex: 1; }
+  .filter-input {
+    font-family: 'DM Sans', sans-serif; font-size: 13.5px; color: var(--text-primary);
+    background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-xs);
+    padding: 8px 12px; outline: none; transition: border-color 0.15s, box-shadow 0.15s; height: 38px;
+  }
+  .filter-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(59,91,219,0.10); }
+  #searchBox { min-width: 220px; }
+  select.filter-input { min-width: 150px; cursor: pointer; }
+  #minAmount, #maxAmount { width: 130px; }
+  .filter-actions { display: flex; align-items: center; gap: 10px; margin-left: auto; }
+
+  /* ── TABLE CARD ── */
+  .table-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow-sm); overflow: hidden; }
+  .table-card-header {
+    padding: 18px 24px; border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .table-card-header h3 { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .table-wrapper { overflow-x: auto; }
+  #invoiceTable { border-collapse: collapse; width: 100%; font-size: 13.5px; }
+  #invoiceTable thead tr { background: var(--bg); border-bottom: 1px solid var(--border); }
+  #invoiceTable th {
+    padding: 12px 16px; text-align: left; font-size: 11.5px; font-weight: 600;
+    color: var(--text-muted); letter-spacing: 0.4px; text-transform: uppercase; white-space: nowrap; border: none;
+  }
+  #invoiceTable td { padding: 13px 16px; border: none; border-bottom: 1px solid var(--border-subtle); color: var(--text-secondary); vertical-align: middle; }
+  #invoiceTable tbody tr { transition: background 0.12s; }
+  #invoiceTable tbody tr:nth-child(even) { background: #fafbfd; }
+  #invoiceTable tbody tr:hover { background: var(--accent-light) !important; }
+  #invoiceTable tbody tr:last-child td { border-bottom: none; }
+  #invoiceTable td:first-child { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--text-muted); font-weight: 500; }
+  .amount-cell { font-family: 'DM Mono', monospace; font-weight: 600; color: var(--text-primary); font-size: 13.5px; }
+  .action-cell { display: flex; gap: 6px; align-items: center; }
+
+  /* ── VENDOR LINK ── */
+  .vendor-link {
+    display: inline-flex; align-items: center; gap: 6px; font-size: 13.5px;
+    font-weight: 600; color: var(--accent); cursor: pointer; padding: 4px 0;
+    transition: color 0.15s; background: none; border: none;
+  }
+  .vendor-link:hover { color: var(--accent-hover); text-decoration: underline; text-underline-offset: 3px; }
+
+  /* ── BADGES ── */
+  .badge {
+    display: inline-flex; align-items: center; gap: 5px; font-size: 11.5px; font-weight: 600;
+    border-radius: 100px; padding: 3px 10px; letter-spacing: 0.2px; white-space: nowrap;
+  }
+  .badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; }
+  .badge-green { background: var(--green-bg); color: var(--green); }
+  .badge-green::before { background: #16a34a; }
+  .badge-amber { background: var(--amber-bg); color: var(--amber); }
+  .badge-amber::before { background: #d97706; }
+  .badge-red { background: var(--red-bg); color: var(--red); }
+  .badge-red::before { background: #dc2626; }
+
+  .status-pending  { display: none; }
+  .status-approved { display: none; }
+  .status-rejected { display: none; }
+  .due-overdue     { display: none; }
+  .due-due-soon    { display: none; }
+  .due-active      { display: none; }
+
+  /* ── INVOICE DETAILS ── */
+  #invoiceDetails { animation: fadeIn 0.2s ease; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .detail-panel {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 28px 32px; box-shadow: var(--shadow-md);
+  }
+  .detail-panel-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid var(--border);
+  }
+  .detail-panel-header h2 { font-size: 16px; font-weight: 700; color: var(--text-primary); }
+  .detail-panel-actions { display: flex; gap: 10px; align-items: center; }
+  .detail-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 18px 32px;
+  }
+  .detail-field label {
+    display: block; font-size: 11px; font-weight: 600; color: var(--text-muted);
+    text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 5px;
+  }
+  .detail-field span { font-size: 14px; font-weight: 500; color: var(--text-primary); }
+
+  /* ── ACTION BUTTONS in detail panel ── */
+  .btn-edit {
+    background: var(--accent-light); color: var(--accent);
+    border: 1px solid #c7d2fe; font-size: 12.5px; padding: 7px 14px;
+  }
+  .btn-edit:hover { background: #dde5ff; color: var(--accent-hover); transform: translateY(-1px); }
+  .btn-edit svg { flex-shrink: 0; }
+
+  .btn-view-pdf {
+    background: var(--surface); color: var(--text-secondary);
+    border: 1px solid var(--border); font-size: 12.5px; padding: 7px 14px;
+  }
+  .btn-view-pdf:hover { background: var(--bg); color: var(--text-primary); border-color: #c9cdd9; transform: translateY(-1px); }
+  .btn-view-pdf svg { flex-shrink: 0; }
+
+  /* ── SORT SELECT ── */
+  #sortBy {
+    font-family: 'DM Sans', sans-serif; font-size: 13px; color: var(--text-secondary);
+    background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-xs);
+    padding: 7px 12px; cursor: pointer; height: 38px; outline: none;
+  }
+  #sortBy:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(59,91,219,0.10); }
+
+  /* ── CURRENCY TAG ── */
+  .currency-tag {
+    font-family: 'DM Mono', monospace; font-size: 11px; font-weight: 600;
+    background: #f1f3f9; color: var(--text-secondary); border-radius: 4px;
+    padding: 2px 7px; letter-spacing: 0.3px;
+  }
+
+  /* ── RESPONSIVE KPI ── */
+  @media (max-width: 1200px) {
+    .kpi-grid-4 { grid-template-columns: repeat(2, 1fr); }
+    .kpi-row-3  { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 768px) {
+    .kpi-grid-4, .kpi-grid-3 { grid-template-columns: repeat(2, 1fr); }
+    .kpi-row-3  { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 480px) {
+    .kpi-grid-4, .kpi-grid-3 { grid-template-columns: 1fr; }
+  }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+  ::-webkit-scrollbar-thumb:hover { background: #c5cad6; }
+
+  /* ════════════════════════════════════════════
+     EDIT MODAL
+  ════════════════════════════════════════════ */
+  .modal-backdrop {
+    position: fixed; inset: 0;
+    background: rgba(15, 17, 23, 0.40);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+    z-index: 200;
+    display: flex; align-items: center; justify-content: center;
+    padding: 20px;
+    opacity: 0;
+    transition: opacity 0.22s ease;
+    pointer-events: none;
+  }
+  .modal-backdrop.visible { opacity: 1; pointer-events: all; }
+
+  .edit-modal {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    box-shadow: var(--shadow-lg), 0 0 0 1px rgba(59,91,219,0.06);
+    width: 100%; max-width: 540px;
+    transform: translateY(16px) scale(0.98);
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.22s ease;
+    opacity: 0;
+  }
+  .modal-backdrop.visible .edit-modal { transform: translateY(0) scale(1); opacity: 1; }
+
+  .edit-modal-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 22px 28px 0;
+  }
+  .edit-modal-header-left { display: flex; align-items: center; gap: 12px; }
+  .edit-modal-icon {
+    width: 38px; height: 38px; background: var(--accent-light);
+    border-radius: var(--radius-sm);
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .edit-modal-icon svg { color: var(--accent); }
+  .edit-modal-title { font-size: 16px; font-weight: 700; color: var(--text-primary); letter-spacing: -0.2px; }
+  .edit-modal-subtitle { font-size: 12px; color: var(--text-muted); margin-top: 1px; }
+  .modal-close-btn {
+    width: 32px; height: 32px;
+    background: var(--bg); border: 1px solid var(--border);
+    border-radius: var(--radius-xs); cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.15s, border-color 0.15s;
+    color: var(--text-muted); flex-shrink: 0;
+  }
+  .modal-close-btn:hover { background: var(--border); color: var(--text-primary); border-color: #d0d4e0; }
+
+  .edit-modal-divider { height: 1px; background: var(--border); margin: 20px 28px 0; }
+  .edit-modal-body { padding: 24px 28px; display: flex; flex-direction: column; gap: 18px; }
+
+  .form-field { display: flex; flex-direction: column; gap: 7px; }
+  .form-label {
+    font-size: 12px; font-weight: 600; color: var(--text-secondary);
+    letter-spacing: 0.1px; display: flex; align-items: center; gap: 4px;
+  }
+  .form-label-required { color: var(--accent); font-size: 13px; line-height: 1; }
+  .form-input {
+    font-family: 'DM Sans', sans-serif; font-size: 14px; color: var(--text-primary);
+    background: var(--bg); border: 1.5px solid var(--border); border-radius: var(--radius-sm);
+    padding: 10px 14px; outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
+    width: 100%; height: 42px;
+  }
+  .form-input:hover { border-color: #c9cdd9; background: var(--surface); }
+  .form-input:focus { border-color: var(--accent); background: var(--surface); box-shadow: 0 0 0 3px rgba(59,91,219,0.12); }
+  .form-input.input-error { border-color: #dc2626; box-shadow: 0 0 0 3px rgba(220,38,38,0.10); }
+  .form-error-msg { font-size: 11.5px; color: #dc2626; font-weight: 500; display: none; align-items: center; gap: 4px; }
+  .form-error-msg.visible { display: flex; }
+  .form-hint { font-size: 11.5px; color: var(--text-muted); }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+  .edit-modal-footer {
+    padding: 0 28px 24px;
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  }
+  .edit-modal-footer-left { display: flex; align-items: center; gap: 6px; }
+  .footer-save-hint { font-size: 11.5px; color: var(--text-muted); }
+  .edit-modal-footer-right { display: flex; align-items: center; gap: 10px; }
+
+  .btn-modal-cancel {
+    background: var(--surface); color: var(--text-secondary);
+    border: 1.5px solid var(--border); padding: 9px 18px; font-size: 13px;
+  }
+  .btn-modal-cancel:hover { background: var(--bg); color: var(--text-primary); }
+  .btn-modal-save {
+    background: var(--accent); color: #fff;
+    border: 1.5px solid transparent; padding: 9px 22px; font-size: 13px;
+    min-width: 120px; justify-content: center;
+  }
+  .btn-modal-save:hover { background: var(--accent-hover); transform: translateY(-1px); }
+  .btn-modal-save:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
+
+  .save-spinner {
+    width: 14px; height: 14px;
+    border: 2px solid rgba(255,255,255,0.35); border-top-color: #fff;
+    border-radius: 50%; animation: spin 0.65s linear infinite; display: none;
+  }
+  .btn-modal-save.saving .save-spinner { display: block; }
+  .btn-modal-save.saving .save-label  { display: none; }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .save-success-toast {
+    position: fixed; bottom: 32px; right: 32px;
+    background: #166534; color: #fff;
+    font-size: 13px; font-weight: 600; padding: 12px 20px;
+    border-radius: var(--radius-sm); box-shadow: var(--shadow-lg);
+    display: flex; align-items: center; gap: 8px;
+    z-index: 400; opacity: 0; transform: translateY(8px);
+    transition: opacity 0.2s, transform 0.2s; pointer-events: none;
+  }
+  .save-success-toast.show { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 560px) {
+    .edit-modal { border-radius: 12px; }
+    .edit-modal-header { padding: 18px 20px 0; }
+    .edit-modal-divider { margin: 16px 20px 0; }
+    .edit-modal-body { padding: 18px 20px; gap: 14px; }
+    .edit-modal-footer { padding: 0 20px 20px; flex-direction: column; align-items: stretch; }
+    .edit-modal-footer-right { flex-direction: column; }
+    .form-row { grid-template-columns: 1fr; }
+    .btn-modal-cancel, .btn-modal-save { width: 100%; justify-content: center; }
+  }
+
+  /* ════════════════════════════════════════════
+     PDF VIEWER OVERLAY
+  ════════════════════════════════════════════ */
+  .pdf-overlay {
+    position: fixed; inset: 0;
+    z-index: 300;
+    display: flex;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+    pointer-events: none;
+  }
+  .pdf-overlay.visible {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  /* dark scrim on the left side when panel slides in */
+  .pdf-overlay-scrim {
+    flex: 1;
+    background: rgba(15, 17, 23, 0.45);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+    cursor: pointer;
+  }
+
+  /* the panel itself */
+  .pdf-panel {
+    width: min(820px, 100vw);
+    height: 100%;
+    background: #f0f2f7;
+    display: flex;
+    flex-direction: column;
+    box-shadow: -8px 0 40px rgba(15,17,23,0.18);
+    transform: translateX(100%);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    flex-shrink: 0;
+  }
+  .pdf-overlay.visible .pdf-panel {
+    transform: translateX(0);
+  }
+
+  /* panel top bar */
+  .pdf-panel-topbar {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 20px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-shrink: 0;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .pdf-panel-icon {
+    width: 34px; height: 34px;
+    background: #fef2f2;
+    border-radius: var(--radius-xs);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .pdf-panel-icon svg { color: #dc2626; }
+
+  .pdf-panel-info { flex: 1; min-width: 0; }
+  .pdf-panel-title {
+    font-size: 13.5px; font-weight: 700; color: var(--text-primary);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    letter-spacing: -0.1px;
+  }
+  .pdf-panel-meta { font-size: 11.5px; color: var(--text-muted); font-weight: 400; }
+
+  .pdf-panel-topbar-actions {
+    display: flex; align-items: center; gap: 8px; flex-shrink: 0;
+  }
+
+  .pdf-toolbar-btn {
+    font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 600;
+    border-radius: var(--radius-xs); padding: 6px 12px; cursor: pointer;
+    display: inline-flex; align-items: center; gap: 5px;
+    transition: all 0.15s ease; white-space: nowrap; border: none;
+  }
+  .pdf-open-btn {
+    background: var(--accent-light); color: var(--accent); border: 1px solid #c7d2fe;
+  }
+  .pdf-open-btn:hover { background: #dde5ff; transform: translateY(-1px); }
+
+  .pdf-close-btn {
+    width: 34px; height: 34px; padding: 0;
+    background: var(--bg); color: var(--text-muted);
+    border: 1px solid var(--border); border-radius: var(--radius-xs);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; transition: all 0.15s;
+  }
+  .pdf-close-btn:hover { background: var(--red-bg); color: var(--red); border-color: #fecaca; }
+
+  /* pdf metadata strip */
+  .pdf-meta-strip {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    flex-shrink: 0;
+    flex-wrap: wrap;
+  }
+  .pdf-meta-item { display: flex; align-items: center; gap: 6px; }
+  .pdf-meta-label { font-size: 11px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.4px; }
+  .pdf-meta-value { font-size: 12.5px; font-weight: 600; color: var(--text-primary); }
+  .pdf-meta-divider { width: 1px; height: 16px; background: var(--border); flex-shrink: 0; }
+
+  /* iframe container */
+  .pdf-iframe-wrap {
+    flex: 1;
+    overflow: hidden;
+    position: relative;
+    background: #e8eaef;
+  }
+
+  .pdf-iframe-wrap iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    display: block;
+  }
+
+  /* loading state */
+  .pdf-loading-overlay {
+    position: absolute; inset: 0;
+    background: #f0f2f7;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 14px;
+    z-index: 2;
+    transition: opacity 0.3s;
+  }
+  .pdf-loading-overlay.hidden { opacity: 0; pointer-events: none; }
+
+  .pdf-loading-spinner {
+    width: 36px; height: 36px;
+    border: 3px solid var(--border);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  .pdf-loading-text { font-size: 13px; font-weight: 500; color: var(--text-muted); }
+
+  /* error state */
+  .pdf-error-state {
+    position: absolute; inset: 0;
+    background: #f0f2f7;
+    display: none;
+    flex-direction: column; align-items: center; justify-content: center;
+    gap: 12px; padding: 32px;
+    text-align: center;
+  }
+  .pdf-error-state.visible { display: flex; }
+  .pdf-error-icon {
+    width: 52px; height: 52px; background: var(--red-bg);
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  }
+  .pdf-error-icon svg { color: var(--red); }
+  .pdf-error-title { font-size: 15px; font-weight: 700; color: var(--text-primary); }
+  .pdf-error-desc  { font-size: 13px; color: var(--text-muted); max-width: 300px; }
+
+  /* responsive */
+  @media (max-width: 768px) {
+    .pdf-panel { width: 100vw; }
+    .pdf-overlay-scrim { display: none; }
+    .pdf-meta-strip { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── HEADER ── -->
+<header class="header">
+  <div class="header-brand">
+    <div class="header-logo">
+      <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="3" y="2" width="9" height="12" rx="1.5" stroke="white" stroke-width="1.5"/>
+        <path d="M8 6h2M8 9h4M8 12h3" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+        <rect x="9" y="8" width="8" height="9" rx="1.5" fill="#3b5bdb" stroke="white" stroke-width="1.5"/>
+        <path d="M11 11h4M11 14h2" stroke="white" stroke-width="1.2" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <span class="header-title">Payables<span>AI</span></span>
+  </div>
+  <span class="header-meta">Accounts Payable Automation</span>
+</header>
+
+<div class="main">
+
+  <!-- ── KPI SECTION ── -->
+  <section class="kpi-section">
+    <div class="kpi-block">
+      <div class="kpi-block-header">
+        <span class="kpi-block-title">Financial Overview</span>
+        <span class="kpi-block-subtitle">Aggregated invoice values across all currencies</span>
+      </div>
+      <div class="kpi-grid kpi-grid-4 kpi-primary">
+        <div class="card card-primary">
+          <div class="card-icon card-icon-blue">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+          </div>
+          <h3>Total Invoices</h3><p id="invoiceCount">0</p>
+          <span class="card-label">All currencies</span>
+        </div>
+        <div class="card card-primary">
+          <div class="card-icon card-icon-blue">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          </div>
+          <h3>USD Total</h3><p id="usdTotal">0</p>
+          <span class="card-label">US Dollar</span>
+        </div>
+        <div class="card card-primary">
+          <div class="card-icon card-icon-blue">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          </div>
+          <h3>INR Total</h3><p id="inrTotal">0</p>
+          <span class="card-label">Indian Rupee</span>
+        </div>
+        <div class="card card-primary">
+          <div class="card-icon card-icon-blue">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M14.31 8l5.74 9.94M9.69 8h11.48M7.38 12l5.74-9.94M9.69 16 3.95 6.06M14.31 16H2.83M16.62 12 10.88 21.94"/></svg>
+          </div>
+          <h3>EUR Total</h3><p id="eurTotal">0</p>
+          <span class="card-label">Euro</span>
+        </div>
+      </div>
+    </div>
+    <div class="kpi-row-3">
+      <div class="kpi-block kpi-sub-block">
+        <div class="kpi-block-header">
+          <span class="kpi-block-title">Invoice Distribution</span>
+          <span class="kpi-block-subtitle">Count by currency</span>
+        </div>
+        <div class="kpi-grid kpi-grid-3">
+          <div class="card">
+            <div class="card-icon card-icon-slate"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+            <h3>USD</h3><p id="usdCount">0</p>
+          </div>
+          <div class="card">
+            <div class="card-icon card-icon-slate"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/></svg></div>
+            <h3>INR</h3><p id="inrCount">0</p>
+          </div>
+          <div class="card">
+            <div class="card-icon card-icon-slate"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/></svg></div>
+            <h3>EUR</h3><p id="eurCount">0</p>
+          </div>
+        </div>
+      </div>
+      <div class="kpi-block kpi-sub-block">
+        <div class="kpi-block-header">
+          <span class="kpi-block-title">Approval Workflow</span>
+          <span class="kpi-block-subtitle">Current review status</span>
+        </div>
+        <div class="kpi-grid kpi-grid-3">
+          <div class="card card-status card-amber"><div class="status-dot dot-amber"></div><h3>Pending</h3><p id="pendingCount">0</p></div>
+          <div class="card card-status card-green"><div class="status-dot dot-green"></div><h3>Approved</h3><p id="approvedCount">0</p></div>
+          <div class="card card-status card-red"><div class="status-dot dot-red"></div><h3>Rejected</h3><p id="rejectedCount">0</p></div>
+        </div>
+      </div>
+      <div class="kpi-block kpi-sub-block">
+        <div class="kpi-block-header">
+          <span class="kpi-block-title">Payment Health</span>
+          <span class="kpi-block-subtitle">Due date tracking</span>
+        </div>
+        <div class="kpi-grid kpi-grid-3">
+          <div class="card card-status card-green"><div class="status-dot dot-green"></div><h3>Active</h3><p id="activeCount">0</p></div>
+          <div class="card card-status card-amber"><div class="status-dot dot-amber"></div><h3>Due Soon</h3><p id="dueSoonCount">0</p></div>
+          <div class="card card-status card-red"><div class="status-dot dot-red"></div><h3>Overdue</h3><p id="overdueCount">0</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── UPLOAD SECTION ── -->
+  <section>
+    <div class="section-label">Upload Invoice</div>
+    <div class="upload-card">
+      <div class="upload-inner">
+        <div class="upload-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="17 8 12 3 7 8"/>
+            <line x1="12" y1="3" x2="12" y2="15"/>
+          </svg>
+        </div>
+        <div class="upload-text">
+          <h4>Upload Invoice PDF</h4>
+          <p>Select a PDF file to extract and record invoice data automatically</p>
+        </div>
+        <div class="upload-controls">
+          <input type="file" id="pdfFile" accept=".pdf">
+          <button class="btn btn-primary" onclick="uploadPDF()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/><path d="M5 20h14"/></svg>
+            Upload
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── INVOICE DETAILS (dynamic) ── -->
+  <div id="invoiceDetails"></div>
+
+  <!-- ── FILTERS SECTION ── -->
+  <section>
+    <div class="section-label">Filters &amp; Sort</div>
+    <div class="filter-card">
+      <div class="filter-group">
+        <input class="filter-input" type="text" id="searchBox" placeholder="Search vendor…" onkeyup="filterTable()">
+        <select class="filter-input" id="currencyFilter">
+          <option value="">All Currencies</option>
+          <option value="USD">USD</option>
+          <option value="INR">INR</option>
+          <option value="EUR">EUR</option>
+        </select>
+        <select class="filter-input" id="statusFilter">
+          <option value="">All Status</option>
+          <option value="Pending">Pending</option>
+          <option value="Approved">Approved</option>
+          <option value="Rejected">Rejected</option>
+        </select>
+        <input class="filter-input" type="number" id="minAmount" placeholder="Min amount">
+        <input class="filter-input" type="number" id="maxAmount" placeholder="Max amount">
+        <button class="btn btn-ghost" onclick="filterTable()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+          Apply
+        </button>
+      </div>
+      <div class="filter-actions">
+        <select id="sortBy" onchange="sortTable()">
+          <option value="">Sort by…</option>
+          <option value="high">Highest Amount</option>
+          <option value="low">Lowest Amount</option>
+          <option value="az">Vendor A–Z</option>
+          <option value="za">Vendor Z–A</option>
+        </select>
+        <button class="btn btn-ghost" onclick="exportExcel()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Export Excel
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── INVOICE TABLE ── -->
+  <section>
+    <div class="table-card">
+      <div class="table-card-header">
+        <h3>Invoices</h3>
+      </div>
+      <div class="table-wrapper">
+        <table id="invoiceTable">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Vendor</th>
+              <th>Invoice No.</th>
+              <th>Amount</th>
+              <th>Currency</th>
+              <th>Status</th>
+              <th>Due Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+</div><!-- /main -->
+
+<!-- ════════════════════════════════════════════
+     EDIT MODAL
+════════════════════════════════════════════ -->
+<div class="modal-backdrop" id="editModalBackdrop" onclick="handleBackdropClick(event)">
+  <div class="edit-modal" id="editModal" role="dialog" aria-modal="true" aria-labelledby="editModalTitle">
+
+    <div class="edit-modal-header">
+      <div class="edit-modal-header-left">
+        <div class="edit-modal-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+          </svg>
+        </div>
+        <div>
+          <div class="edit-modal-title" id="editModalTitle">Edit Invoice</div>
+          <div class="edit-modal-subtitle" id="editModalSubtitle">Review and update extracted data</div>
+        </div>
+      </div>
+      <button class="modal-close-btn" onclick="closeEditModal()" aria-label="Close">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+
+    <div class="edit-modal-divider"></div>
+
+    <div class="edit-modal-body">
+      <input type="hidden" id="editInvoiceId">
+
+      <div class="form-field">
+        <label class="form-label" for="editVendorName">
+          Vendor Name <span class="form-label-required">*</span>
+        </label>
+        <input class="form-input" type="text" id="editVendorName" placeholder="e.g. Acme Corp Ltd">
+        <span class="form-error-msg" id="errVendorName">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          Vendor name is required
+        </span>
+      </div>
+
+      <div class="form-row">
+        <div class="form-field">
+          <label class="form-label" for="editInvoiceDate">
+            Invoice Date <span class="form-label-required">*</span>
+          </label>
+          <input class="form-input" type="text" id="editInvoiceDate" placeholder="e.g. 2024-01-15">
+          <span class="form-error-msg" id="errInvoiceDate">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            Invoice date is required
+          </span>
+        </div>
+        <div class="form-field">
+          <label class="form-label" for="editDueDate">
+            Due Date <span class="form-label-required">*</span>
+          </label>
+          <input class="form-input" type="text" id="editDueDate" placeholder="e.g. 2024-02-15">
+          <span class="form-error-msg" id="errDueDate">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            Due date is required
+          </span>
+        </div>
+      </div>
+
+      <div class="form-field">
+        <label class="form-label" for="editTotalAmount">
+          Total Amount <span class="form-label-required">*</span>
+        </label>
+        <input class="form-input" type="text" id="editTotalAmount" placeholder="e.g. 12500.00">
+        <span class="form-error-msg" id="errTotalAmount">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          Total amount is required
+        </span>
+        <span class="form-hint">Enter numeric value only — currency is stored separately</span>
+      </div>
+    </div>
+
+    <div class="edit-modal-footer">
+      <div class="edit-modal-footer-left">
+        <span class="footer-save-hint">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-muted)"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          Changes are saved immediately
+        </span>
+      </div>
+      <div class="edit-modal-footer-right">
+        <button class="btn btn-modal-cancel" onclick="closeEditModal()">Cancel</button>
+        <button class="btn btn-modal-save" id="saveBtn" onclick="saveInvoice()">
+          <div class="save-spinner"></div>
+          <span class="save-label">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+            Save Changes
+          </span>
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════
+     PDF VIEWER PANEL
+════════════════════════════════════════════ -->
+<div class="pdf-overlay" id="pdfOverlay">
+
+  <!-- click scrim to close -->
+  <div class="pdf-overlay-scrim" onclick="closePdfViewer()"></div>
+
+  <div class="pdf-panel" id="pdfPanel" role="dialog" aria-modal="true" aria-label="Invoice PDF Viewer">
+
+    <!-- top bar -->
+    <div class="pdf-panel-topbar">
+      <div class="pdf-panel-icon">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+          <polyline points="14 2 14 8 20 8"/>
+          <line x1="16" y1="13" x2="8" y2="13"/>
+          <line x1="16" y1="17" x2="8" y2="17"/>
+          <polyline points="10 9 9 9 8 9"/>
+        </svg>
+      </div>
+      <div class="pdf-panel-info">
+        <div class="pdf-panel-title" id="pdfPanelTitle">Invoice PDF</div>
+        <div class="pdf-panel-meta" id="pdfPanelMeta">Original document</div>
+      </div>
+      <div class="pdf-panel-topbar-actions">
+        <a id="pdfOpenTabBtn" href="#" target="_blank" class="pdf-toolbar-btn pdf-open-btn">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Open in Tab
+        </a>
+        <button class="pdf-close-btn" onclick="closePdfViewer()" aria-label="Close PDF viewer">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- metadata strip -->
+    <div class="pdf-meta-strip" id="pdfMetaStrip">
+      <div class="pdf-meta-item">
+        <span class="pdf-meta-label">Invoice #</span>
+        <span class="pdf-meta-value" id="pdfMetaInvoiceNo">—</span>
+      </div>
+      <div class="pdf-meta-divider"></div>
+      <div class="pdf-meta-item">
+        <span class="pdf-meta-label">Vendor</span>
+        <span class="pdf-meta-value" id="pdfMetaVendor">—</span>
+      </div>
+      <div class="pdf-meta-divider"></div>
+      <div class="pdf-meta-item">
+        <span class="pdf-meta-label">Amount</span>
+        <span class="pdf-meta-value" id="pdfMetaAmount">—</span>
+      </div>
+      <div class="pdf-meta-divider"></div>
+      <div class="pdf-meta-item">
+        <span class="pdf-meta-label">Status</span>
+        <span class="pdf-meta-value" id="pdfMetaStatus">—</span>
+      </div>
+      <div class="pdf-meta-divider"></div>
+      <div class="pdf-meta-item">
+        <span class="pdf-meta-label">Due</span>
+        <span class="pdf-meta-value" id="pdfMetaDue">—</span>
+      </div>
+    </div>
+
+    <!-- iframe + loading/error states -->
+    <div class="pdf-iframe-wrap">
+
+      <div class="pdf-loading-overlay" id="pdfLoadingOverlay">
+        <div class="pdf-loading-spinner"></div>
+        <span class="pdf-loading-text">Loading document…</span>
+      </div>
+
+      <div class="pdf-error-state" id="pdfErrorState">
+        <div class="pdf-error-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+        </div>
+        <div class="pdf-error-title">Unable to load PDF</div>
+        <div class="pdf-error-desc">The document could not be rendered in-browser. Use "Open in Tab" to view it directly.</div>
+      </div>
+
+      <iframe
+        id="pdfIframe"
+        title="Invoice PDF"
+        allowfullscreen
+      ></iframe>
+
+    </div>
+  </div>
+</div>
+
+<!-- Success toast -->
+<div class="save-success-toast" id="successToast">
+  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+  Invoice updated successfully
+</div>
+
+<script>
+
+/* ── Badge helpers ── */
+function statusBadge(status){
+  const s = status.toLowerCase();
+  if(s==='approved') return `<span class="badge badge-green">${status}</span>`;
+  if(s==='rejected') return `<span class="badge badge-red">${status}</span>`;
+  return `<span class="badge badge-amber">${status}</span>`;
+}
+function dueBadge(due){
+  const d = due.toLowerCase().replace(' ','-');
+  if(d==='overdue')  return `<span class="badge badge-red">${due}</span>`;
+  if(d==='due-soon') return `<span class="badge badge-amber">${due}</span>`;
+  return `<span class="badge badge-green">${due}</span>`;
+}
+
+/* ── Stats ── */
+async function loadStats(){
+  const response = await fetch("http://127.0.0.1:8000/stats");
+  const stats = await response.json();
+  document.getElementById("invoiceCount").innerText  = stats.total_invoices;
+  document.getElementById("usdCount").innerText      = stats.usd_count;
+  document.getElementById("inrCount").innerText      = stats.inr_count;
+  document.getElementById("eurCount").innerText      = stats.eur_count;
+  document.getElementById("usdTotal").innerText      = stats.usd_total;
+  document.getElementById("inrTotal").innerText      = stats.inr_total;
+  document.getElementById("eurTotal").innerText      = stats.eur_total;
+  document.getElementById("pendingCount").innerText  = stats.pending_count;
+  document.getElementById("approvedCount").innerText = stats.approved_count;
+  document.getElementById("rejectedCount").innerText = stats.rejected_count;
+  document.getElementById("overdueCount").innerText  = stats.overdue_count;
+  document.getElementById("dueSoonCount").innerText  = stats.due_soon_count;
+  document.getElementById("activeCount").innerText   = stats.active_count;
+}
+
+/* ── Invoice detail panel ── */
+async function viewInvoice(id){
+  const detailsDiv = document.getElementById("invoiceDetails");
+  if(detailsDiv.dataset.currentId == id){
+    detailsDiv.innerHTML = "";
+    detailsDiv.dataset.currentId = "";
+    return;
+  }
+  const response = await fetch(`http://127.0.0.1:8000/invoice/${id}`);
+  const invoice  = await response.json();
+  detailsDiv.dataset.currentId = id;
+  renderDetailPanel(invoice);
+}
+
+function renderDetailPanel(invoice){
+  const detailsDiv = document.getElementById("invoiceDetails");
+  detailsDiv.innerHTML = `
+    <div class="detail-panel">
+      <div class="detail-panel-header">
+        <h2>Invoice Details — #${invoice.invoice_number}</h2>
+        <div class="detail-panel-actions">
+          <button class="btn btn-view-pdf" onclick="openPdfViewer(${invoice.id})">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+            </svg>
+            View PDF
+          </button>
+          <button class="btn btn-edit" onclick="openEditModal(${invoice.id})">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+              <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+            </svg>
+            Edit Invoice
+          </button>
+        </div>
+      </div>
+      <div class="detail-grid">
+        <div class="detail-field"><label>Vendor</label><span>${invoice.vendor_name}</span></div>
+        <div class="detail-field"><label>Invoice Number</label><span>${invoice.invoice_number}</span></div>
+        <div class="detail-field"><label>Invoice Date</label><span>${invoice.invoice_date}</span></div>
+        <div class="detail-field"><label>Due Date</label><span>${invoice.due_date}</span></div>
+        <div class="detail-field"><label>Currency</label><span>${invoice.currency}</span></div>
+        <div class="detail-field"><label>Subtotal</label><span>${invoice.subtotal}</span></div>
+        <div class="detail-field"><label>Tax</label><span>${invoice.tax_amount}</span></div>
+        <div class="detail-field"><label>Total Amount</label><span>${invoice.total_amount}</span></div>
+        <div class="detail-field"><label>Status</label><span>${statusBadge(invoice.status)}</span></div>
+        <div class="detail-field"><label>Reject Reason</label><span>${invoice.reject_reason || 'N/A'}</span></div>
+      </div>
+    </div>
+  `;
+  /* stash the invoice on the div so openPdfViewer can pull metadata */
+  document.getElementById("invoiceDetails")._invoiceCache = invoice;
+}
+
+/* ── Upload ── */
+async function uploadPDF(){
+  const fileInput = document.getElementById("pdfFile");
+  const file = fileInput.files[0];
+  if(!file){ alert("Please choose a PDF"); return; }
+  const formData = new FormData();
+  formData.append("file", file);
+  const response = await fetch("http://127.0.0.1:8000/upload", { method:"POST", body:formData });
+  const result   = await response.json();
+  alert(result.message);
+  loadInvoices();
+  loadStats();
+}
+
+/* ── Delete ── */
+async function deleteInvoice(id){
+  if(!confirm("Delete this invoice?")) return;
+  await fetch(`http://127.0.0.1:8000/invoice/${id}`, { method:"DELETE" });
+  const detailsDiv = document.getElementById("invoiceDetails");
+  if(detailsDiv.dataset.currentId == id){
+    detailsDiv.innerHTML = "";
+    detailsDiv.dataset.currentId = "";
+  }
+  loadInvoices();
+  loadStats();
+}
+
+/* ── Approve / Reject ── */
+async function approveInvoice(id){
+  await fetch(`http://127.0.0.1:8000/approve/${id}`, { method:"PUT" });
+  loadInvoices();
+  if(document.getElementById("invoiceDetails").dataset.currentId == id) viewInvoice(id);
+}
+async function rejectInvoice(id){
+  const reason = prompt("Enter rejection reason:");
+  if(!reason) return;
+  await fetch(`http://127.0.0.1:8000/reject/${id}`, {
+    method:"PUT",
+    headers:{"Content-Type":"application/json"},
+    body: JSON.stringify(reason)
+  });
+  loadInvoices();
+  if(document.getElementById("invoiceDetails").dataset.currentId == id) viewInvoice(id);
+}
+
+/* ── Load invoices ── */
+async function loadInvoices(){
+  const response = await fetch("http://127.0.0.1:8000/invoices");
+  const invoices = await response.json();
+  document.getElementById("invoiceCount").innerText = invoices.length;
+  const tbody = document.querySelector("#invoiceTable tbody");
+  tbody.innerHTML = "";
+  invoices.forEach(invoice => {
+    const row = document.createElement("tr");
+    row.innerHTML = `
+      <td>${invoice.id}</td>
+      <td><span class="vendor-link" onclick="viewInvoice(${invoice.id})">${invoice.vendor_name}</span></td>
+      <td>${invoice.invoice_number}</td>
+      <td class="amount-cell">${invoice.total_amount}</td>
+      <td><span class="currency-tag">${invoice.currency}</span></td>
+      <td>${statusBadge(invoice.status)}</td>
+      <td>${dueBadge(invoice.due_status)}</td>
+      <td>
+        <div class="action-cell">
+          <button class="btn btn-approve" onclick="approveInvoice(${invoice.id})">Approve</button>
+          <button class="btn btn-reject"  onclick="rejectInvoice(${invoice.id})">Reject</button>
+          <button class="btn btn-delete"  onclick="deleteInvoice(${invoice.id})">Delete</button>
+        </div>
+      </td>
+    `;
+    tbody.appendChild(row);
+  });
+}
+
+/* ── Sort / Filter / Export ── */
+function sortTable(){
+  const tbody = document.querySelector("#invoiceTable tbody");
+  const rows  = Array.from(tbody.querySelectorAll("tr"));
+  const sortBy = document.getElementById("sortBy").value;
+  rows.sort((a,b)=>{
+    if(sortBy==="high") return parseFloat(b.children[3].innerText) - parseFloat(a.children[3].innerText);
+    if(sortBy==="low")  return parseFloat(a.children[3].innerText) - parseFloat(b.children[3].innerText);
+    if(sortBy==="az")   return a.children[1].innerText.localeCompare(b.children[1].innerText);
+    if(sortBy==="za")   return b.children[1].innerText.localeCompare(a.children[1].innerText);
+    return 0;
+  });
+  rows.forEach(row => tbody.appendChild(row));
+}
+function filterTable(){
+  const vendorSearch   = document.getElementById("searchBox").value.toLowerCase();
+  const currencyFilter = document.getElementById("currencyFilter").value;
+  const statusFilter   = document.getElementById("statusFilter").value;
+  const minAmount = parseFloat(document.getElementById("minAmount").value) || 0;
+  const maxAmount = parseFloat(document.getElementById("maxAmount").value) || Infinity;
+  document.querySelectorAll("#invoiceTable tbody tr").forEach(row => {
+    const vendor   = row.children[1].innerText.toLowerCase();
+    const amount   = parseFloat(row.children[3].innerText);
+    const currency = row.children[4].innerText.trim();
+    const status   = row.children[5].innerText.trim();
+    row.style.display = (
+      vendor.includes(vendorSearch) &&
+      (currencyFilter === "" || currency === currencyFilter) &&
+      (statusFilter   === "" || status   === statusFilter)  &&
+      amount >= minAmount && amount <= maxAmount
+    ) ? "" : "none";
+  });
+}
+function exportExcel(){ window.open("http://127.0.0.1:8000/export"); }
+
+/* ════════════════════════════════════════════
+   PDF VIEWER
+════════════════════════════════════════════ */
+function openPdfViewer(id){
+  const detailsDiv = document.getElementById("invoiceDetails");
+  const invoice    = detailsDiv._invoiceCache || {};
+  const pdfUrl     = `http://127.0.0.1:8000/pdf/${id}`;
+
+  /* populate header */
+  document.getElementById("pdfPanelTitle").textContent =
+    invoice.vendor_name ? `${invoice.vendor_name} — Invoice PDF` : "Invoice PDF";
+  document.getElementById("pdfPanelMeta").textContent =
+    invoice.invoice_number ? `Invoice #${invoice.invoice_number}` : `Invoice ID ${id}`;
+
+  /* populate meta strip */
+  document.getElementById("pdfMetaInvoiceNo").textContent = invoice.invoice_number || "—";
+  document.getElementById("pdfMetaVendor").textContent    = invoice.vendor_name    || "—";
+  document.getElementById("pdfMetaAmount").textContent    = invoice.total_amount
+    ? `${invoice.currency || ""} ${invoice.total_amount}`.trim() : "—";
+  document.getElementById("pdfMetaStatus").textContent    = invoice.status   || "—";
+  document.getElementById("pdfMetaDue").textContent       = invoice.due_date  || "—";
+
+  /* open-in-tab link */
+  document.getElementById("pdfOpenTabBtn").href = pdfUrl;
+
+  /* reset states */
+  const loadingEl = document.getElementById("pdfLoadingOverlay");
+  const errorEl   = document.getElementById("pdfErrorState");
+  const iframe    = document.getElementById("pdfIframe");
+  loadingEl.classList.remove("hidden");
+  errorEl.classList.remove("visible");
+  iframe.src = "";
+
+  /* show overlay */
+  const overlay = document.getElementById("pdfOverlay");
+  overlay.style.display = "flex";
+  overlay.getBoundingClientRect(); /* force reflow */
+  overlay.classList.add("visible");
+  document.body.style.overflow = "hidden";
+
+  /* load iframe — use #toolbar=1 for chrome's built-in PDF toolbar */
+  iframe.onload = function(){
+    /* small delay so the PDF renderer has time to paint */
+    setTimeout(() => loadingEl.classList.add("hidden"), 400);
+  };
+  iframe.onerror = function(){
+    loadingEl.classList.add("hidden");
+    errorEl.classList.add("visible");
+  };
+
+  /* append #toolbar=1 for browser PDF viewer chrome controls */
+  iframe.src = pdfUrl + "#toolbar=1&navpanes=0&scrollbar=1";
+
+  /* safety timeout — if load event never fires, hide spinner anyway */
+  setTimeout(() => loadingEl.classList.add("hidden"), 6000);
+}
+
+function closePdfViewer(){
+  const overlay = document.getElementById("pdfOverlay");
+  overlay.classList.remove("visible");
+  document.body.style.overflow = "";
+  setTimeout(() => {
+    overlay.style.display = "none";
+    /* clear iframe src to stop any ongoing network request */
+    document.getElementById("pdfIframe").src = "";
+  }, 300);
+}
+
+/* Escape key closes whichever layer is on top */
+document.addEventListener("keydown", e => {
+  if(e.key !== "Escape") return;
+  const pdfOpen  = document.getElementById("pdfOverlay").classList.contains("visible");
+  const editOpen = document.getElementById("editModalBackdrop").classList.contains("visible");
+  if(pdfOpen)  { closePdfViewer();  return; }
+  if(editOpen) { closeEditModal();  return; }
+});
+
+/* ════════════════════════════════════════════
+   EDIT MODAL LOGIC
+════════════════════════════════════════════ */
+function openEditModal(id){
+  fetch(`http://127.0.0.1:8000/invoice/${id}`)
+    .then(r => r.json())
+    .then(invoice => {
+      document.getElementById("editInvoiceId").value    = invoice.id;
+      document.getElementById("editVendorName").value   = invoice.vendor_name   || "";
+      document.getElementById("editInvoiceDate").value  = invoice.invoice_date  || "";
+      document.getElementById("editDueDate").value      = invoice.due_date      || "";
+      document.getElementById("editTotalAmount").value  = invoice.total_amount  || "";
+      document.getElementById("editModalSubtitle").textContent =
+        `Invoice #${invoice.invoice_number} · ${invoice.vendor_name}`;
+      clearValidationErrors();
+      showModal();
+    });
+}
+
+function showModal(){
+  const backdrop = document.getElementById("editModalBackdrop");
+  backdrop.style.display = "flex";
+  backdrop.getBoundingClientRect();
+  backdrop.classList.add("visible");
+  document.body.style.overflow = "hidden";
+  setTimeout(() => document.getElementById("editVendorName").focus(), 80);
+}
+
+function closeEditModal(){
+  const backdrop = document.getElementById("editModalBackdrop");
+  backdrop.classList.remove("visible");
+  document.body.style.overflow = "";
+  setTimeout(() => { backdrop.style.display = "none"; }, 240);
+}
+
+function handleBackdropClick(e){
+  if(e.target === document.getElementById("editModalBackdrop")) closeEditModal();
+}
+
+function clearValidationErrors(){
+  ["editVendorName","editInvoiceDate","editDueDate","editTotalAmount"].forEach(id => {
+    document.getElementById(id).classList.remove("input-error");
+  });
+  ["errVendorName","errInvoiceDate","errDueDate","errTotalAmount"].forEach(id => {
+    document.getElementById(id).classList.remove("visible");
+  });
+}
+
+function validateForm(){
+  let valid = true;
+  const fields = [
+    { inputId:"editVendorName",  errId:"errVendorName"  },
+    { inputId:"editInvoiceDate", errId:"errInvoiceDate" },
+    { inputId:"editDueDate",     errId:"errDueDate"     },
+    { inputId:"editTotalAmount", errId:"errTotalAmount" },
+  ];
+  fields.forEach(({ inputId, errId }) => {
+    const inp = document.getElementById(inputId);
+    if(!inp.value.trim()){
+      inp.classList.add("input-error");
+      document.getElementById(errId).classList.add("visible");
+      valid = false;
+    } else {
+      inp.classList.remove("input-error");
+      document.getElementById(errId).classList.remove("visible");
+    }
+  });
+  return valid;
+}
+
+["editVendorName","editInvoiceDate","editDueDate","editTotalAmount"].forEach(id => {
+  document.getElementById(id).addEventListener("input", function(){
+    this.classList.remove("input-error");
+    const errMap = {
+      editVendorName:"errVendorName", editInvoiceDate:"errInvoiceDate",
+      editDueDate:"errDueDate", editTotalAmount:"errTotalAmount"
+    };
+    document.getElementById(errMap[id]).classList.remove("visible");
+  });
+});
+
+async function saveInvoice(){
+  if(!validateForm()) return;
+  const id           = document.getElementById("editInvoiceId").value;
+  const vendor_name  = document.getElementById("editVendorName").value.trim();
+  const invoice_date = document.getElementById("editInvoiceDate").value.trim();
+  const due_date     = document.getElementById("editDueDate").value.trim();
+  const total_amount = document.getElementById("editTotalAmount").value.trim();
+
+  const saveBtn = document.getElementById("saveBtn");
+  saveBtn.disabled = true;
+  saveBtn.classList.add("saving");
+
+  try {
+    const response = await fetch(`http://127.0.0.1:8000/invoice/${id}`, {
+      method:"PUT",
+      headers:{"Content-Type":"application/json"},
+      body: JSON.stringify({ vendor_name, invoice_date, due_date, total_amount })
+    });
+    if(!response.ok) throw new Error("Save failed");
+    closeEditModal();
+    await loadInvoices();
+    await loadStats();
+    const updated = await fetch(`http://127.0.0.1:8000/invoice/${id}`).then(r => r.json());
+    document.getElementById("invoiceDetails").dataset.currentId = id;
+    renderDetailPanel(updated);
+    showSuccessToast();
+  } catch(err){
+    console.error("Save error:", err);
+    document.getElementById("editTotalAmount").classList.add("input-error");
+  } finally {
+    saveBtn.disabled = false;
+    saveBtn.classList.remove("saving");
+  }
+}
+
+function showSuccessToast(){
+  const toast = document.getElementById("successToast");
+  toast.classList.add("show");
+  setTimeout(() => toast.classList.remove("show"), 3000);
+}
+
+/* ── Init ── */
+loadInvoices();
+loadStats();
+</script>
+</body>
+</html>
