@@ -31,7 +31,43 @@ os.makedirs(
     UPLOAD_FOLDER,
     exist_ok=True
 )
+def create_audit_log(
+    invoice_id,
+    action,
+    details
+):
 
+    conn = sqlite3.connect(
+        "invoices.db"
+    )
+
+    cursor = conn.cursor()
+
+    cursor.execute("""
+    INSERT INTO audit_logs (
+        invoice_id,
+        action,
+        details,
+        created_at
+    )
+    VALUES (?, ?, ?, ?)
+    """, (
+
+        invoice_id,
+
+        action,
+
+        details,
+
+        datetime.now().strftime(
+            "%Y-%m-%d %H:%M:%S"
+        )
+
+    ))
+
+    conn.commit()
+
+    conn.close()
 @app.get("/invoices")
 def get_invoices():
 
@@ -48,7 +84,9 @@ def get_invoices():
         currency,
         status,
         due_date,
-        reject_reason
+        reject_reason,
+        confidence_score,
+        validation_notes
     FROM invoices
     """)
 
@@ -120,7 +158,9 @@ def get_invoices():
             "currency": row[4],
             "status": row[5],
             "due_status": due_status,
-            "reject_reason": row[7]
+            "reject_reason": row[7],
+            "confidence_score": row[8],
+            "validation_notes": row[9]
         })
 
     return invoices
@@ -153,6 +193,57 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+def evaluate_invoice(invoice):
+
+    prompt = f"""
+You are an invoice validation expert.
+
+Review this invoice JSON.
+
+Invoice:
+
+{json.dumps(invoice, indent=2)}
+
+Check:
+
+1. Invoice number format
+2. Vendor name quality
+3. Date validity
+4. Currency validity
+5. Amount consistency
+and also
+You are a senior AP auditor.
+
+Review the extracted invoice.
+
+Consider taxes, discounts, freight charges,
+
+handling fees, insurance fees and any other
+
+charges mentioned in the invoice.
+
+Determine whether the final amount appears
+
+mathematically consistent.
+Return ONLY valid JSON.
+
+{{
+    "confidence_score": 95,
+    "validation_notes": "Invoice appears valid"
+}}
+"""
+
+    response = model.generate_content(prompt)
+
+    clean_json = (
+        response.text
+        .replace("```json", "")
+        .replace("```", "")
+        .strip()
+    )
+
+    return json.loads(clean_json)
 
 @app.post("/upload")
 async def upload_invoice(
@@ -237,6 +328,17 @@ Invoice Text:
     invoice = json.loads(
         clean_json
     )
+    evaluation = evaluate_invoice(
+        invoice
+    )
+
+    confidence_score = evaluation[
+        "confidence_score"
+    ]
+
+    validation_notes = evaluation[
+        "validation_notes"
+    ]
 
     print("Gemini extraction completed")
 
@@ -277,35 +379,44 @@ Invoice Text:
         subtotal,
         tax_amount,
         total_amount,
-        pdf_path
+        pdf_path,
+        confidence_score,
+        validation_notes
     )
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?,?)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     """, (
 
         invoice.get("vendor_name"),
-
         invoice.get("invoice_number"),
-
         invoice.get("invoice_date"),
-
         invoice.get("due_date"),
-
         invoice.get("currency"),
-
         invoice.get("subtotal"),
-
         invoice.get("tax_amount"),
-
         invoice.get("total_amount"),
-
-        file_path
+        file_path,
+        confidence_score,
+        validation_notes
 
     ))
+
+    invoice_id = cursor.lastrowid
 
     conn.commit()
 
     conn.close()
 
+    create_audit_log(
+        invoice_id,
+        "UPLOAD",
+        "Invoice uploaded successfully"
+    )
+
+    create_audit_log(
+        invoice_id,
+        "VALIDATION",
+        f"Confidence Score = {confidence_score}"
+    )
     print("Inserted into database")
 
     return {
@@ -369,7 +480,9 @@ def get_invoice(invoice_id: int):
         "status": row[9],
         "due_status": row[10],
         "reject_reason": row[11],
-        "pdf_path": row[12]
+        "pdf_path": row[12],
+        "confidence_score": row[13],
+        "validation_notes": row[14]
     }
 
 @app.get("/stats")
@@ -570,6 +683,12 @@ def approve_invoice(invoice_id: int):
 
     conn.close()
 
+    create_audit_log(
+        invoice_id,
+        "APPROVED",
+        "Invoice approved"
+    )
+
     return {
         "message":
         "Invoice Approved"
@@ -635,11 +754,16 @@ def reject_invoice(
 
     conn.close()
 
+    create_audit_log(
+        invoice_id,
+        "REJECTED",
+        reason
+    )
+
     return {
         "message":
         "Invoice rejected"
     }
-
 @app.put("/invoice/{invoice_id}")
 def update_invoice(
     invoice_id: int,
@@ -679,6 +803,42 @@ def update_invoice(
         "message":
         "Invoice updated"
     }
+@app.get("/audit/{invoice_id}")
+def get_audit_logs(
+    invoice_id: int
+):
+
+    conn = sqlite3.connect(
+        "invoices.db"
+    )
+
+    cursor = conn.cursor()
+
+    cursor.execute("""
+    SELECT
+        action,
+        details,
+        created_at
+    FROM audit_logs
+    WHERE invoice_id = ?
+    ORDER BY id DESC
+    """, (invoice_id,))
+
+    rows = cursor.fetchall()
+
+    conn.close()
+
+    logs = []
+
+    for row in rows:
+
+        logs.append({
+            "action": row[0],
+            "details": row[1],
+            "created_at": row[2]
+        })
+
+    return logs
 
 @app.get("/pdf/{invoice_id}")
 def get_pdf(invoice_id: int):
