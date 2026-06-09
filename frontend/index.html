@@ -55,6 +55,11 @@
   --red-border:  rgba(255,77,106,0.20);
   --red-text:    #e84d65;
 
+  --teal:        #14b8a6;
+  --teal-bg:     rgba(20,184,166,0.08);
+  --teal-border: rgba(20,184,166,0.20);
+  --teal-text:   #0d9488;
+
   --r-sm: 8px;
   --r-md: 12px;
   --r-lg: 16px;
@@ -70,9 +75,7 @@
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
 html { scroll-behavior: smooth; }
-
 body {
   font-family: var(--font-body);
   background: var(--bg-void);
@@ -84,7 +87,6 @@ body {
   cursor: default;
 }
 
-/* ── CUSTOM CURSOR ── */
 .cursor-dot {
   position: fixed; top: 0; left: 0;
   width: 8px; height: 8px;
@@ -108,7 +110,6 @@ body {
   mix-blend-mode: screen;
 }
 
-/* ── NOISE OVERLAY ── */
 body::before {
   content: '';
   position: fixed; inset: 0;
@@ -116,15 +117,8 @@ body::before {
   pointer-events: none; z-index: 0; opacity: 0.6;
 }
 
-/* ── AMBIENT GLOW BG ── */
-.ambient-bg {
-  position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden;
-}
-.ambient-blob {
-  position: absolute; border-radius: 50%;
-  filter: blur(120px); opacity: 0.12;
-  animation: blobFloat 20s ease-in-out infinite;
-}
+.ambient-bg { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+.ambient-blob { position: absolute; border-radius: 50%; filter: blur(120px); opacity: 0.12; animation: blobFloat 20s ease-in-out infinite; }
 .blob-1 { width: 600px; height: 600px; background: var(--blue); top: -200px; left: -100px; animation-delay: 0s; }
 .blob-2 { width: 500px; height: 500px; background: var(--violet); bottom: -150px; right: -100px; animation-delay: -7s; }
 .blob-3 { width: 400px; height: 400px; background: var(--cyan); top: 40%; right: 20%; animation-delay: -14s; }
@@ -134,9 +128,7 @@ body::before {
   66%  { transform: translate(-20px, 20px) scale(0.95); }
 }
 
-/* ════════════════════════════════════════════
-   HEADER
-════════════════════════════════════════════ */
+/* HEADER */
 .header {
   position: sticky; top: 0; z-index: 200;
   height: 64px;
@@ -153,7 +145,6 @@ body::before {
   background: linear-gradient(90deg, transparent, var(--blue) 30%, var(--cyan) 70%, transparent);
   opacity: 0.25;
 }
-
 .header-brand { display: flex; align-items: center; gap: 12px; }
 .header-logo {
   width: 36px; height: 36px;
@@ -168,194 +159,51 @@ body::before {
   50%       { box-shadow: 0 0 30px rgba(61,122,255,0.35), 0 0 60px rgba(0,212,255,0.15); }
 }
 .header-logo svg { width: 18px; height: 18px; }
-
-.header-wordmark {
-  font-family: var(--font-display);
-  font-size: 18px; font-weight: 800;
-  color: var(--text-ultra);
-  letter-spacing: -0.5px;
-}
-.header-wordmark span {
-  background: linear-gradient(90deg, var(--blue-bright), var(--cyan));
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.header-pill {
-  font-family: var(--font-mono);
-  font-size: 10px; font-weight: 500;
-  color: var(--text-sec);
-  background: var(--bg-raised);
-  border: 1px solid var(--border-sub);
-  border-radius: 100px;
-  padding: 4px 12px;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-}
-
-.header-status {
-  display: flex; align-items: center; gap: 8px;
-  font-size: 12px; color: var(--text-sec);
-  font-family: var(--font-mono);
-}
-.status-indicator {
-  width: 7px; height: 7px; border-radius: 50%;
-  background: var(--green);
-  box-shadow: 0 0 0 3px var(--green-bg);
-  animation: statusPulse 2s ease-in-out infinite;
-}
+.header-wordmark { font-family: var(--font-display); font-size: 18px; font-weight: 800; color: var(--text-ultra); letter-spacing: -0.5px; }
+.header-wordmark span { background: linear-gradient(90deg, var(--blue-bright), var(--cyan)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.header-pill { font-family: var(--font-mono); font-size: 10px; font-weight: 500; color: var(--text-sec); background: var(--bg-raised); border: 1px solid var(--border-sub); border-radius: 100px; padding: 4px 12px; letter-spacing: 0.5px; text-transform: uppercase; }
+.header-status { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text-sec); font-family: var(--font-mono); }
+.status-indicator { width: 7px; height: 7px; border-radius: 50%; background: var(--green); box-shadow: 0 0 0 3px var(--green-bg); animation: statusPulse 2s ease-in-out infinite; }
 @keyframes statusPulse {
   0%, 100% { box-shadow: 0 0 0 3px var(--green-bg); }
   50%       { box-shadow: 0 0 0 5px rgba(0,229,160,0.12); }
 }
 
-/* ════════════════════════════════════════════
-   MAIN LAYOUT
-════════════════════════════════════════════ */
-.main {
-  position: relative; z-index: 1;
-  max-width: 1480px;
-  margin: 0 auto;
-  padding: 36px 40px 80px;
-  display: flex; flex-direction: column; gap: 32px;
-}
+/* MAIN LAYOUT */
+.main { position: relative; z-index: 1; max-width: 1480px; margin: 0 auto; padding: 36px 40px 80px; display: flex; flex-direction: column; gap: 32px; }
 
-/* ── SECTION LABEL ── */
-.section-label {
-  font-family: var(--font-mono);
-  font-size: 10px; font-weight: 500;
-  color: var(--text-mute);
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  margin-bottom: 16px;
-  display: flex; align-items: center; gap: 8px;
-}
-.section-label::before {
-  content: '';
-  width: 16px; height: 1px;
-  background: linear-gradient(90deg, var(--blue), transparent);
-}
+.section-label { font-family: var(--font-mono); font-size: 10px; font-weight: 500; color: var(--text-mute); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+.section-label::before { content: ''; width: 16px; height: 1px; background: linear-gradient(90deg, var(--blue), transparent); }
 
-/* ════════════════════════════════════════════
-   KPI CARDS
-════════════════════════════════════════════ */
+/* KPI CARDS */
 .stats { display: none !important; }
-
 .kpi-section { display: flex; flex-direction: column; gap: 24px; }
-
-.kpi-block-header {
-  display: flex; align-items: baseline; gap: 12px;
-  margin-bottom: 16px;
-}
-.kpi-block-title {
-  font-family: var(--font-display);
-  font-size: 14px; font-weight: 700;
-  color: var(--text-ultra);
-  letter-spacing: -0.2px;
-}
-.kpi-block-subtitle {
-  font-size: 12px; color: var(--text-mute);
-}
-
+.kpi-block-header { display: flex; align-items: baseline; gap: 12px; margin-bottom: 16px; }
+.kpi-block-title { font-family: var(--font-display); font-size: 14px; font-weight: 700; color: var(--text-ultra); letter-spacing: -0.2px; }
+.kpi-block-subtitle { font-size: 12px; color: var(--text-mute); }
 .kpi-grid { display: grid; gap: 16px; }
 .kpi-grid-4 { grid-template-columns: repeat(4, 1fr); }
 .kpi-grid-3 { grid-template-columns: repeat(3, 1fr); }
 .kpi-row-3  { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; align-items: start; }
-
-.kpi-sub-block {
-  background: var(--bg-surface);
-  border: 1px solid var(--border-sub);
-  border-radius: var(--r-xl);
-  padding: 20px 22px 24px;
-  position: relative; overflow: hidden;
-  transition: border-color var(--transition-mid);
-}
+.kpi-sub-block { background: var(--bg-surface); border: 1px solid var(--border-sub); border-radius: var(--r-xl); padding: 20px 22px 24px; position: relative; overflow: hidden; transition: border-color var(--transition-mid); }
 .kpi-sub-block:hover { border-color: var(--border-mid); }
-.kpi-sub-block::before {
-  content: '';
-  position: absolute; top: 0; left: 0; right: 0; height: 1px;
-  background: linear-gradient(90deg, transparent, var(--blue-glow), transparent);
-}
-
+.kpi-sub-block::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--blue-glow), transparent); }
 .kpi-sub-block .kpi-block-header { margin-bottom: 14px; }
 
-/* Primary KPI Cards */
-.kpi-primary .card-primary {
-  background: var(--bg-surface);
-  border: 1px solid var(--border-sub);
-  border-radius: var(--r-xl);
-  padding: 24px;
-  position: relative; overflow: hidden;
-  cursor: default;
-  transition: all var(--transition-mid);
-}
-.kpi-primary .card-primary::before {
-  content: '';
-  position: absolute; top: 0; left: 0; right: 0; height: 1px;
-  background: linear-gradient(90deg, transparent, var(--blue), var(--cyan), transparent);
-  opacity: 0.4;
-  transition: opacity var(--transition-mid);
-}
-.kpi-primary .card-primary:hover {
-  border-color: var(--border-mid);
-  transform: translateY(-3px);
-  box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 40px var(--blue-deep);
-}
+.kpi-primary .card-primary { background: var(--bg-surface); border: 1px solid var(--border-sub); border-radius: var(--r-xl); padding: 24px; position: relative; overflow: hidden; cursor: default; transition: all var(--transition-mid); }
+.kpi-primary .card-primary::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--blue), var(--cyan), transparent); opacity: 0.4; transition: opacity var(--transition-mid); }
+.kpi-primary .card-primary:hover { border-color: var(--border-mid); transform: translateY(-3px); box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 40px var(--blue-deep); }
 .kpi-primary .card-primary:hover::before { opacity: 0.8; }
-
-.kpi-primary .card-primary .kpi-shimmer {
-  position: absolute; inset: 0;
-  background: linear-gradient(105deg, transparent 40%, rgba(61,122,255,0.04) 50%, transparent 60%);
-  transform: translateX(-100%);
-  transition: transform 0.8s ease;
-}
+.kpi-primary .card-primary .kpi-shimmer { position: absolute; inset: 0; background: linear-gradient(105deg, transparent 40%, rgba(61,122,255,0.04) 50%, transparent 60%); transform: translateX(-100%); transition: transform 0.8s ease; }
 .kpi-primary .card-primary:hover .kpi-shimmer { transform: translateX(100%); }
 
-/* Sub Cards */
-.card {
-  background: var(--bg-raised);
-  border: 1px solid var(--border-dim);
-  border-radius: var(--r-lg);
-  padding: 16px 18px;
-  transition: all var(--transition-mid);
-  cursor: default;
-  position: relative; overflow: hidden;
-}
-.card:hover {
-  border-color: var(--border-sub);
-  transform: translateY(-2px);
-  background: var(--bg-float);
-}
-
-.card h3 {
-  font-family: var(--font-mono);
-  font-size: 10px; font-weight: 500;
-  color: var(--text-mute);
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  margin-bottom: 10px;
-}
-.card p {
-  font-family: var(--font-mono);
-  font-size: 28px; font-weight: 400;
-  color: var(--text-ultra);
-  letter-spacing: -1px;
-  line-height: 1;
-}
-.kpi-primary .card-primary p {
-  font-size: 36px; font-weight: 300; letter-spacing: -1.5px;
-}
-.card-label {
-  display: block;
-  font-size: 11px; color: var(--text-mute);
-  margin-top: 8px; font-family: var(--font-mono);
-}
-
-/* Status Cards */
-.card-status {
-  border-left: 2px solid;
-  padding-left: 16px;
-}
+.card { background: var(--bg-raised); border: 1px solid var(--border-dim); border-radius: var(--r-lg); padding: 16px 18px; transition: all var(--transition-mid); cursor: default; position: relative; overflow: hidden; }
+.card:hover { border-color: var(--border-sub); transform: translateY(-2px); background: var(--bg-float); }
+.card h3 { font-family: var(--font-mono); font-size: 10px; font-weight: 500; color: var(--text-mute); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 10px; }
+.card p { font-family: var(--font-mono); font-size: 28px; font-weight: 400; color: var(--text-ultra); letter-spacing: -1px; line-height: 1; }
+.kpi-primary .card-primary p { font-size: 36px; font-weight: 300; letter-spacing: -1.5px; }
+.card-label { display: block; font-size: 11px; color: var(--text-mute); margin-top: 8px; font-family: var(--font-mono); }
+.card-status { border-left: 2px solid; padding-left: 16px; }
 .card-green  { border-left-color: var(--green); }
 .card-amber  { border-left-color: var(--amber); }
 .card-red    { border-left-color: var(--red); }
@@ -365,910 +213,648 @@ body::before {
 .card-green p  { color: var(--green); }
 .card-amber p  { color: var(--amber); }
 .card-red p    { color: var(--red); }
-
-.card-icon {
-  width: 34px; height: 34px;
-  border-radius: var(--r-sm);
-  display: flex; align-items: center; justify-content: center;
-  margin-bottom: 14px; flex-shrink: 0;
-}
+.card-icon { width: 34px; height: 34px; border-radius: var(--r-sm); display: flex; align-items: center; justify-content: center; margin-bottom: 14px; flex-shrink: 0; }
 .card-icon-blue { background: rgba(61,122,255,0.12); color: var(--blue-bright); border: 1px solid rgba(61,122,255,0.20); }
 .card-icon-slate { background: rgba(255,255,255,0.04); color: var(--text-mute); border: 1px solid var(--border-dim); }
-
 .status-dot { width: 8px; height: 8px; border-radius: 50%; margin-bottom: 12px; }
 .dot-green { background: var(--green); box-shadow: 0 0 8px var(--green); }
 .dot-amber { background: var(--amber); box-shadow: 0 0 8px var(--amber); }
 .dot-red   { background: var(--red);   box-shadow: 0 0 8px var(--red); }
 
-/* ════════════════════════════════════════════
-   UPLOAD SECTION
-════════════════════════════════════════════ */
-.upload-card {
-  background: var(--bg-surface);
-  border: 1px solid var(--border-sub);
-  border-radius: var(--r-xl);
-  padding: 28px 32px;
-  position: relative; overflow: hidden;
-  transition: border-color var(--transition-mid);
-}
-.upload-card::before {
-  content: '';
-  position: absolute; top: 0; left: 0; right: 0; height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(61,122,255,0.4), transparent);
-}
-
-.upload-inner {
-  border: 1.5px dashed var(--border-mid);
-  border-radius: var(--r-lg);
-  background: var(--bg-raised);
-  padding: 28px 24px;
-  display: flex; align-items: center; gap: 24px;
-  transition: all var(--transition-mid);
-  cursor: pointer;
-}
-.upload-inner:hover {
-  border-color: var(--blue);
-  background: rgba(61,122,255,0.04);
-  box-shadow: 0 0 40px rgba(61,122,255,0.06), inset 0 0 20px rgba(61,122,255,0.03);
-}
-
-.upload-icon {
-  width: 52px; height: 52px;
-  background: rgba(61,122,255,0.10);
-  border: 1px solid rgba(61,122,255,0.20);
-  border-radius: var(--r-md);
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0;
-  color: var(--blue-bright);
-  transition: all var(--transition-mid);
-}
-.upload-inner:hover .upload-icon {
-  background: rgba(61,122,255,0.16);
-  box-shadow: 0 0 20px rgba(61,122,255,0.20);
-  transform: scale(1.05);
-}
-
-.upload-text h4 {
-  font-family: var(--font-display);
-  font-size: 15px; font-weight: 700;
-  color: var(--text-ultra); margin-bottom: 4px;
-}
-.upload-text p { font-size: 12.5px; color: var(--text-sec); }
-
-.upload-controls { display: flex; align-items: center; gap: 12px; margin-left: auto; flex-shrink: 0; }
-
-#pdfFile { font-size: 12.5px; color: var(--text-sec); font-family: var(--font-body); }
-#pdfFile::file-selector-button {
-  font-family: var(--font-body); font-size: 12.5px; font-weight: 600;
-  background: var(--bg-float);
-  border: 1px solid var(--border-mid);
-  border-radius: var(--r-sm);
-  padding: 8px 16px;
-  color: var(--text-prime);
-  cursor: pointer;
-  transition: all var(--transition-fast);
-  margin-right: 10px;
-}
-#pdfFile::file-selector-button:hover { background: var(--bg-hover); border-color: var(--border-hi); }
-
-/* ════════════════════════════════════════════
-   BUTTONS
-════════════════════════════════════════════ */
-.btn {
-  font-family: var(--font-body);
-  font-size: 13px; font-weight: 600;
-  border: none; border-radius: var(--r-sm);
-  padding: 9px 18px; cursor: pointer;
-  display: inline-flex; align-items: center; gap: 7px;
-  transition: all var(--transition-fast);
-  white-space: nowrap;
-  position: relative; overflow: hidden;
-  letter-spacing: -0.1px;
-}
-.btn::after {
-  content: '';
-  position: absolute; inset: 0;
-  background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.06) 50%, transparent 60%);
-  transform: translateX(-100%);
-  transition: transform 0.5s ease;
-}
-.btn:hover::after { transform: translateX(100%); }
-
-.btn-primary {
-  background: linear-gradient(135deg, var(--blue) 0%, var(--blue-bright) 100%);
-  color: #fff;
-  box-shadow: 0 4px 20px rgba(61,122,255,0.35), 0 0 0 1px rgba(255,255,255,0.08) inset;
-}
-.btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 30px rgba(61,122,255,0.45), 0 0 0 1px rgba(255,255,255,0.12) inset;
-}
-.btn-primary:active { transform: translateY(0); }
-
-.btn-ghost {
-  background: var(--bg-raised);
-  color: var(--text-prime);
-  border: 1px solid var(--border-mid);
-}
-.btn-ghost:hover {
-  background: var(--bg-float);
-  border-color: var(--border-hi);
-  color: var(--text-ultra);
-}
-
-.btn-approve {
-  background: var(--green-bg);
-  color: var(--green-text);
-  border: 1px solid var(--green-border);
-  font-size: 11.5px; padding: 5px 11px;
-}
-.btn-approve:hover { background: rgba(0,229,160,0.14); transform: translateY(-1px); box-shadow: 0 4px 14px rgba(0,229,160,0.15); }
-
-.btn-reject {
-  background: var(--amber-bg);
-  color: var(--amber-text);
-  border: 1px solid var(--amber-border);
-  font-size: 11.5px; padding: 5px 11px;
-}
-.btn-reject:hover  { background: rgba(245,158,11,0.14); transform: translateY(-1px); box-shadow: 0 4px 14px rgba(245,158,11,0.15); }
-
-.btn-delete {
-  background: var(--red-bg);
-  color: var(--red-text);
-  border: 1px solid var(--red-border);
-  font-size: 11.5px; padding: 5px 11px;
-}
-.btn-delete:hover { background: rgba(255,77,106,0.14); transform: translateY(-1px); box-shadow: 0 4px 14px rgba(255,77,106,0.15); }
-
-/* ════════════════════════════════════════════
-   FILTER CARD
-════════════════════════════════════════════ */
-.filter-card {
-  background: var(--bg-surface);
-  border: 1px solid var(--border-sub);
-  border-radius: var(--r-xl);
-  padding: 20px 24px;
-  display: flex; align-items: center; flex-wrap: wrap; gap: 12px;
-  position: relative; overflow: hidden;
-}
-.filter-card::before {
-  content: '';
-  position: absolute; top: 0; left: 0; right: 0; height: 1px;
-  background: linear-gradient(90deg, transparent, var(--border-mid), transparent);
-}
-
-.filter-group { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; flex: 1; }
-
-.filter-input {
-  font-family: var(--font-body);
-  font-size: 13px; color: var(--text-prime);
-  background: var(--bg-raised);
-  border: 1px solid var(--border-sub);
-  border-radius: var(--r-sm);
-  padding: 8px 12px;
-  outline: none;
-  transition: all var(--transition-fast);
-  height: 38px;
-  appearance: none;
-  -webkit-appearance: none;
-}
-.filter-input::placeholder { color: var(--text-mute); }
-.filter-input:focus {
-  border-color: var(--blue);
-  background: var(--bg-float);
-  box-shadow: 0 0 0 3px rgba(61,122,255,0.12);
-  color: var(--text-ultra);
-}
-.filter-input option { background: var(--bg-surface); color: var(--text-prime); }
-
-#searchBox { min-width: 200px; }
-select.filter-input { min-width: 150px; cursor: pointer; }
-#minAmount, #maxAmount { width: 130px; }
-
-.filter-actions { display: flex; align-items: center; gap: 10px; margin-left: auto; }
-
-#sortBy {
-  font-family: var(--font-body); font-size: 13px;
-  color: var(--text-prime);
-  background: var(--bg-raised);
-  border: 1px solid var(--border-sub);
-  border-radius: var(--r-sm);
-  padding: 0 12px;
-  cursor: pointer; height: 38px; outline: none;
-  appearance: none; -webkit-appearance: none;
-  transition: all var(--transition-fast);
-}
-#sortBy:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(61,122,255,0.12); }
-#sortBy option { background: var(--bg-surface); }
-
-/* ════════════════════════════════════════════
-   TABLE
-════════════════════════════════════════════ */
-.table-card {
+/* ════════════════════════════════════════
+   TOKEN & COST TRACKING PANEL
+════════════════════════════════════════ */
+.token-panel {
   background: var(--bg-surface);
   border: 1px solid var(--border-sub);
   border-radius: var(--r-xl);
   overflow: hidden;
   position: relative;
 }
-.table-card::before {
+.token-panel::before {
   content: '';
   position: absolute; top: 0; left: 0; right: 0; height: 1px;
-  background: linear-gradient(90deg, transparent, var(--blue), var(--cyan), transparent);
-  opacity: 0.3;
+  background: linear-gradient(90deg, transparent, var(--teal), var(--cyan), transparent);
+  opacity: 0.45;
 }
 
-.table-card-header {
+.token-panel-header {
   padding: 20px 24px 18px;
   border-bottom: 1px solid var(--border-sub);
-  display: flex; align-items: center; justify-content: space-between;
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;
 }
-.table-card-header h3 {
-  font-family: var(--font-display);
-  font-size: 15px; font-weight: 700;
-  color: var(--text-ultra);
-  letter-spacing: -0.3px;
+.token-panel-header-left { display: flex; align-items: center; gap: 12px; }
+.token-panel-icon {
+  width: 36px; height: 36px;
+  background: var(--teal-bg);
+  border: 1px solid var(--teal-border);
+  border-radius: var(--r-sm);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--teal-text);
+  flex-shrink: 0;
 }
+.token-panel-title { font-family: var(--font-display); font-size: 15px; font-weight: 700; color: var(--text-ultra); letter-spacing: -0.3px; }
+.token-panel-subtitle { font-size: 12px; color: var(--text-mute); margin-top: 2px; }
+.token-panel-actions { display: flex; align-items: center; gap: 10px; }
 
-.table-wrapper { overflow-x: auto; }
-
-#invoiceTable {
-  border-collapse: collapse; width: 100%;
-  font-size: 13px;
-}
-#invoiceTable thead tr {
+.token-model-tag {
+  font-family: var(--font-mono);
+  font-size: 11px; font-weight: 500;
   background: var(--bg-raised);
+  border: 1px solid var(--border-sub);
+  border-radius: 100px;
+  padding: 4px 12px;
+  color: var(--text-sec);
+  display: flex; align-items: center; gap: 6px;
+}
+.token-model-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--teal); box-shadow: 0 0 6px var(--teal); }
+
+.token-reset-btn {
+  font-family: var(--font-mono);
+  font-size: 11px; font-weight: 500;
+  background: var(--bg-raised);
+  border: 1px solid var(--border-sub);
+  border-radius: var(--r-sm);
+  padding: 6px 14px;
+  color: var(--text-mute);
+  cursor: pointer;
+  display: flex; align-items: center; gap: 5px;
+  transition: all var(--transition-fast);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+.token-reset-btn:hover { background: var(--red-bg); color: var(--red-text); border-color: var(--red-border); }
+
+/* Top summary row */
+.token-summary-row {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0;
   border-bottom: 1px solid var(--border-sub);
 }
-#invoiceTable th {
-  padding: 12px 16px;
-  text-align: left;
+.token-summary-cell {
+  padding: 18px 22px;
+  border-right: 1px solid var(--border-sub);
+  position: relative;
+  transition: background var(--transition-fast);
+}
+.token-summary-cell:last-child { border-right: none; }
+.token-summary-cell:hover { background: rgba(255,255,255,0.02); }
+
+.token-cell-label {
   font-family: var(--font-mono);
   font-size: 10px; font-weight: 500;
   color: var(--text-mute);
-  letter-spacing: 1px;
   text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+  display: flex; align-items: center; gap: 5px;
+}
+.token-cell-value {
+  font-family: var(--font-mono);
+  font-size: 22px; font-weight: 400;
+  letter-spacing: -0.8px;
+  line-height: 1;
+  color: var(--text-ultra);
+  transition: color 0.3s;
+}
+.token-cell-value.highlight-cost { color: var(--amber); }
+.token-cell-value.highlight-input { color: var(--blue-bright); }
+.token-cell-value.highlight-output { color: var(--cyan); }
+.token-cell-value.highlight-total { color: var(--teal); }
+.token-cell-delta {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-mute);
+  margin-top: 5px;
+}
+.token-cell-delta.positive { color: var(--green-text); }
+
+/* Pricing config bar */
+.token-pricing-bar {
+  background: var(--bg-raised);
+  border-bottom: 1px solid var(--border-sub);
+  padding: 12px 24px;
+  display: flex; align-items: center; gap: 20px; flex-wrap: wrap;
+}
+.token-pricing-label {
+  font-family: var(--font-mono);
+  font-size: 10px; font-weight: 500;
+  color: var(--text-mute);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  flex-shrink: 0;
+}
+.token-pricing-item {
+  display: flex; align-items: center; gap: 8px;
+}
+.token-pricing-item label {
+  font-family: var(--font-mono);
+  font-size: 11px; color: var(--text-sec);
   white-space: nowrap;
-  border: none;
 }
-#invoiceTable td {
-  padding: 14px 16px; border: none;
+.token-pricing-input {
+  font-family: var(--font-mono);
+  font-size: 12px; font-weight: 500;
+  background: var(--bg-float);
+  border: 1px solid var(--border-sub);
+  border-radius: var(--r-sm);
+  padding: 5px 10px;
+  color: var(--text-prime);
+  outline: none;
+  width: 90px;
+  transition: all var(--transition-fast);
+}
+.token-pricing-input:focus { border-color: var(--teal); box-shadow: 0 0 0 3px rgba(20,184,166,0.10); }
+.token-pricing-divider { width: 1px; height: 18px; background: var(--border-sub); flex-shrink: 0; }
+
+/* Body: left charts + right log */
+.token-body {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  min-height: 0;
+}
+.token-body-left {
+  border-right: 1px solid var(--border-sub);
+  padding: 22px 24px;
+  display: flex; flex-direction: column; gap: 22px;
+}
+.token-body-right {
+  display: flex; flex-direction: column;
+  max-height: 420px;
+}
+
+/* Token bar breakdown */
+.token-breakdown-title {
+  font-family: var(--font-mono);
+  font-size: 10px; font-weight: 500;
+  color: var(--text-mute);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 14px;
+  display: flex; align-items: center; gap: 6px;
+}
+.token-bar-group { display: flex; flex-direction: column; gap: 10px; }
+.token-bar-row { display: flex; flex-direction: column; gap: 5px; }
+.token-bar-meta { display: flex; align-items: center; justify-content: space-between; }
+.token-bar-op {
+  font-family: var(--font-mono);
+  font-size: 11px; color: var(--text-sec);
+  display: flex; align-items: center; gap: 6px;
+}
+.token-bar-op-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+.token-bar-val {
+  font-family: var(--font-mono);
+  font-size: 11px; color: var(--text-mute);
+}
+.token-bar-track {
+  height: 5px;
+  background: var(--bg-float);
+  border-radius: 100px;
+  overflow: hidden;
+}
+.token-bar-fill {
+  height: 100%;
+  border-radius: 100px;
+  transition: width 0.6s cubic-bezier(0.16,1,0.3,1);
+  min-width: 2px;
+}
+
+/* Sparkline */
+.token-sparkline-wrap {
+  display: flex; flex-direction: column; gap: 10px;
+}
+.token-sparkline-svg { width: 100%; height: 60px; overflow: visible; }
+.token-spark-line { fill: none; stroke: var(--teal); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.token-spark-area { fill: url(#sparkGrad); opacity: 0.3; }
+.token-spark-dot { fill: var(--teal); }
+
+/* Per-operation cost breakdown */
+.token-op-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.token-op-card {
+  background: var(--bg-raised);
+  border: 1px solid var(--border-dim);
+  border-radius: var(--r-md);
+  padding: 12px 14px;
+  transition: all var(--transition-fast);
+}
+.token-op-card:hover { border-color: var(--border-sub); background: var(--bg-float); }
+.token-op-card-label {
+  font-family: var(--font-mono);
+  font-size: 9.5px; font-weight: 500;
+  color: var(--text-mute);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+  display: flex; align-items: center; gap: 5px;
+}
+.token-op-card-count {
+  font-family: var(--font-mono);
+  font-size: 20px; font-weight: 400;
+  color: var(--text-ultra);
+  letter-spacing: -0.5px;
+  line-height: 1;
+}
+.token-op-card-cost {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-mute);
+  margin-top: 4px;
+}
+
+/* Activity log (right panel) */
+.token-log-header {
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border-sub);
+  display: flex; align-items: center; justify-content: space-between;
+  flex-shrink: 0;
+}
+.token-log-title {
+  font-family: var(--font-mono);
+  font-size: 10px; font-weight: 500;
+  color: var(--text-mute);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  display: flex; align-items: center; gap: 6px;
+}
+.token-log-live-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--teal);
+  box-shadow: 0 0 6px var(--teal);
+  animation: statusPulse 1.5s ease-in-out infinite;
+}
+.token-log-count {
+  font-family: var(--font-mono);
+  font-size: 11px; color: var(--text-mute);
+}
+
+.token-log-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px 0;
+}
+.token-log-empty {
+  padding: 32px 18px;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 12px; color: var(--text-ghost);
+  line-height: 1.8;
+}
+
+.token-log-item {
+  padding: 10px 18px;
   border-bottom: 1px solid var(--border-dim);
-  color: var(--text-sec);
-  vertical-align: middle;
+  display: flex; flex-direction: column; gap: 4px;
   transition: background var(--transition-fast);
+  animation: logItemIn 0.3s cubic-bezier(0.16,1,0.3,1);
 }
+@keyframes logItemIn {
+  from { opacity: 0; transform: translateX(10px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+.token-log-item:hover { background: rgba(255,255,255,0.02); }
+.token-log-item:last-child { border-bottom: none; }
+
+.token-log-item-top {
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+}
+.token-log-op-badge {
+  font-family: var(--font-mono);
+  font-size: 10px; font-weight: 500;
+  border-radius: 4px;
+  padding: 2px 7px;
+  letter-spacing: 0.3px;
+  flex-shrink: 0;
+}
+.log-op-extract  { background: rgba(61,122,255,0.12); color: var(--blue-bright); border: 1px solid rgba(61,122,255,0.20); }
+.log-op-validate { background: rgba(139,92,246,0.12); color: #a78bfa; border: 1px solid rgba(139,92,246,0.20); }
+.log-op-edit     { background: var(--amber-bg); color: var(--amber-text); border: 1px solid var(--amber-border); }
+.log-op-approve  { background: var(--green-bg); color: var(--green-text); border: 1px solid var(--green-border); }
+.log-op-reject   { background: var(--red-bg); color: var(--red-text); border: 1px solid var(--red-border); }
+.log-op-other    { background: var(--teal-bg); color: var(--teal-text); border: 1px solid var(--teal-border); }
+
+.token-log-cost {
+  font-family: var(--font-mono);
+  font-size: 12px; font-weight: 500;
+  color: var(--amber-text);
+}
+.token-log-item-bottom {
+  display: flex; align-items: center; gap: 12px;
+}
+.token-log-tokens {
+  font-family: var(--font-mono);
+  font-size: 11px; color: var(--text-mute);
+  display: flex; align-items: center; gap: 6px;
+}
+.token-log-tokens span { color: var(--text-sec); }
+.token-log-time {
+  font-family: var(--font-mono);
+  font-size: 10px; color: var(--text-ghost);
+  margin-left: auto;
+}
+
+/* Cost gauge */
+.token-gauge-wrap {
+  display: flex; flex-direction: column; gap: 10px;
+}
+.token-gauge-row {
+  display: flex; align-items: center; gap: 10px;
+}
+.token-gauge-track {
+  flex: 1;
+  height: 8px;
+  background: var(--bg-float);
+  border-radius: 100px;
+  overflow: hidden;
+}
+.token-gauge-fill {
+  height: 100%;
+  border-radius: 100px;
+  background: linear-gradient(90deg, var(--teal), var(--cyan));
+  transition: width 0.6s cubic-bezier(0.16,1,0.3,1);
+  min-width: 2px;
+}
+.token-gauge-pct {
+  font-family: var(--font-mono);
+  font-size: 11px; color: var(--text-sec);
+  width: 40px; text-align: right;
+}
+
+/* Session badge */
+.token-session-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 10.5px; font-weight: 500;
+  background: var(--teal-bg);
+  border: 1px solid var(--teal-border);
+  color: var(--teal-text);
+  border-radius: 100px;
+  padding: 4px 10px;
+}
+.token-session-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--teal); }
+
+/* Number counter animation */
+@keyframes countUp {
+  from { opacity: 0.3; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.count-flash { animation: countUp 0.35s cubic-bezier(0.16,1,0.3,1); }
+
+/* UPLOAD SECTION */
+.upload-card { background: var(--bg-surface); border: 1px solid var(--border-sub); border-radius: var(--r-xl); padding: 28px 32px; position: relative; overflow: hidden; transition: border-color var(--transition-mid); }
+.upload-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(61,122,255,0.4), transparent); }
+.upload-inner { border: 1.5px dashed var(--border-mid); border-radius: var(--r-lg); background: var(--bg-raised); padding: 28px 24px; display: flex; align-items: center; gap: 24px; transition: all var(--transition-mid); cursor: pointer; }
+.upload-inner:hover { border-color: var(--blue); background: rgba(61,122,255,0.04); box-shadow: 0 0 40px rgba(61,122,255,0.06), inset 0 0 20px rgba(61,122,255,0.03); }
+.upload-icon { width: 52px; height: 52px; background: rgba(61,122,255,0.10); border: 1px solid rgba(61,122,255,0.20); border-radius: var(--r-md); display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--blue-bright); transition: all var(--transition-mid); }
+.upload-inner:hover .upload-icon { background: rgba(61,122,255,0.16); box-shadow: 0 0 20px rgba(61,122,255,0.20); transform: scale(1.05); }
+.upload-text h4 { font-family: var(--font-display); font-size: 15px; font-weight: 700; color: var(--text-ultra); margin-bottom: 4px; }
+.upload-text p { font-size: 12.5px; color: var(--text-sec); }
+.upload-controls { display: flex; align-items: center; gap: 12px; margin-left: auto; flex-shrink: 0; }
+#pdfFile { font-size: 12.5px; color: var(--text-sec); font-family: var(--font-body); }
+#pdfFile::file-selector-button { font-family: var(--font-body); font-size: 12.5px; font-weight: 600; background: var(--bg-float); border: 1px solid var(--border-mid); border-radius: var(--r-sm); padding: 8px 16px; color: var(--text-prime); cursor: pointer; transition: all var(--transition-fast); margin-right: 10px; }
+#pdfFile::file-selector-button:hover { background: var(--bg-hover); border-color: var(--border-hi); }
+
+/* BUTTONS */
+.btn { font-family: var(--font-body); font-size: 13px; font-weight: 600; border: none; border-radius: var(--r-sm); padding: 9px 18px; cursor: pointer; display: inline-flex; align-items: center; gap: 7px; transition: all var(--transition-fast); white-space: nowrap; position: relative; overflow: hidden; letter-spacing: -0.1px; }
+.btn::after { content: ''; position: absolute; inset: 0; background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.06) 50%, transparent 60%); transform: translateX(-100%); transition: transform 0.5s ease; }
+.btn:hover::after { transform: translateX(100%); }
+.btn-primary { background: linear-gradient(135deg, var(--blue) 0%, var(--blue-bright) 100%); color: #fff; box-shadow: 0 4px 20px rgba(61,122,255,0.35), 0 0 0 1px rgba(255,255,255,0.08) inset; }
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(61,122,255,0.45), 0 0 0 1px rgba(255,255,255,0.12) inset; }
+.btn-primary:active { transform: translateY(0); }
+.btn-ghost { background: var(--bg-raised); color: var(--text-prime); border: 1px solid var(--border-mid); }
+.btn-ghost:hover { background: var(--bg-float); border-color: var(--border-hi); color: var(--text-ultra); }
+.btn-approve { background: var(--green-bg); color: var(--green-text); border: 1px solid var(--green-border); font-size: 11.5px; padding: 5px 11px; }
+.btn-approve:hover { background: rgba(0,229,160,0.14); transform: translateY(-1px); box-shadow: 0 4px 14px rgba(0,229,160,0.15); }
+.btn-reject { background: var(--amber-bg); color: var(--amber-text); border: 1px solid var(--amber-border); font-size: 11.5px; padding: 5px 11px; }
+.btn-reject:hover  { background: rgba(245,158,11,0.14); transform: translateY(-1px); box-shadow: 0 4px 14px rgba(245,158,11,0.15); }
+.btn-delete { background: var(--red-bg); color: var(--red-text); border: 1px solid var(--red-border); font-size: 11.5px; padding: 5px 11px; }
+.btn-delete:hover { background: rgba(255,77,106,0.14); transform: translateY(-1px); box-shadow: 0 4px 14px rgba(255,77,106,0.15); }
+
+/* FILTER CARD */
+.filter-card { background: var(--bg-surface); border: 1px solid var(--border-sub); border-radius: var(--r-xl); padding: 20px 24px; display: flex; align-items: center; flex-wrap: wrap; gap: 12px; position: relative; overflow: hidden; }
+.filter-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--border-mid), transparent); }
+.filter-group { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; flex: 1; }
+.filter-input { font-family: var(--font-body); font-size: 13px; color: var(--text-prime); background: var(--bg-raised); border: 1px solid var(--border-sub); border-radius: var(--r-sm); padding: 8px 12px; outline: none; transition: all var(--transition-fast); height: 38px; appearance: none; -webkit-appearance: none; }
+.filter-input::placeholder { color: var(--text-mute); }
+.filter-input:focus { border-color: var(--blue); background: var(--bg-float); box-shadow: 0 0 0 3px rgba(61,122,255,0.12); color: var(--text-ultra); }
+.filter-input option { background: var(--bg-surface); color: var(--text-prime); }
+#searchBox { min-width: 200px; }
+select.filter-input { min-width: 150px; cursor: pointer; }
+#minAmount, #maxAmount { width: 130px; }
+.filter-actions { display: flex; align-items: center; gap: 10px; margin-left: auto; }
+#sortBy { font-family: var(--font-body); font-size: 13px; color: var(--text-prime); background: var(--bg-raised); border: 1px solid var(--border-sub); border-radius: var(--r-sm); padding: 0 12px; cursor: pointer; height: 38px; outline: none; appearance: none; -webkit-appearance: none; transition: all var(--transition-fast); }
+#sortBy:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(61,122,255,0.12); }
+#sortBy option { background: var(--bg-surface); }
+
+/* TABLE */
+.table-card { background: var(--bg-surface); border: 1px solid var(--border-sub); border-radius: var(--r-xl); overflow: hidden; position: relative; }
+.table-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--blue), var(--cyan), transparent); opacity: 0.3; }
+.table-card-header { padding: 20px 24px 18px; border-bottom: 1px solid var(--border-sub); display: flex; align-items: center; justify-content: space-between; }
+.table-card-header h3 { font-family: var(--font-display); font-size: 15px; font-weight: 700; color: var(--text-ultra); letter-spacing: -0.3px; }
+.table-wrapper { overflow-x: auto; }
+#invoiceTable { border-collapse: collapse; width: 100%; font-size: 13px; }
+#invoiceTable thead tr { background: var(--bg-raised); border-bottom: 1px solid var(--border-sub); }
+#invoiceTable th { padding: 12px 16px; text-align: left; font-family: var(--font-mono); font-size: 10px; font-weight: 500; color: var(--text-mute); letter-spacing: 1px; text-transform: uppercase; white-space: nowrap; border: none; }
+#invoiceTable td { padding: 14px 16px; border: none; border-bottom: 1px solid var(--border-dim); color: var(--text-sec); vertical-align: middle; transition: background var(--transition-fast); }
 #invoiceTable tbody tr { transition: background var(--transition-fast); }
 #invoiceTable tbody tr:nth-child(even) { background: rgba(255,255,255,0.01); }
 #invoiceTable tbody tr:hover { background: rgba(61,122,255,0.04) !important; }
 #invoiceTable tbody tr:last-child td { border-bottom: none; }
-#invoiceTable td:first-child {
-  font-family: var(--font-mono);
-  font-size: 11px; color: var(--text-mute); font-weight: 400;
-}
-
-.amount-cell {
-  font-family: var(--font-mono);
-  font-weight: 400; color: var(--text-ultra);
-  font-size: 13.5px; letter-spacing: -0.3px;
-}
+#invoiceTable td:first-child { font-family: var(--font-mono); font-size: 11px; color: var(--text-mute); font-weight: 400; }
+.amount-cell { font-family: var(--font-mono); font-weight: 400; color: var(--text-ultra); font-size: 13.5px; letter-spacing: -0.3px; }
 .action-cell { display: flex; gap: 6px; align-items: center; }
 
-/* ── VENDOR LINK ── */
-.vendor-link {
-  display: inline-flex; align-items: center; gap: 6px;
-  font-size: 13.5px; font-weight: 600;
-  color: var(--blue-bright);
-  cursor: pointer; padding: 4px 0;
-  transition: all var(--transition-fast);
-  background: none; border: none;
-  font-family: var(--font-body);
-}
-.vendor-link:hover {
-  color: var(--cyan);
-  text-shadow: 0 0 12px rgba(0,212,255,0.3);
-}
+.vendor-link { display: inline-flex; align-items: center; gap: 6px; font-size: 13.5px; font-weight: 600; color: var(--blue-bright); cursor: pointer; padding: 4px 0; transition: all var(--transition-fast); background: none; border: none; font-family: var(--font-body); }
+.vendor-link:hover { color: var(--cyan); text-shadow: 0 0 12px rgba(0,212,255,0.3); }
 
-/* ── CURRENCY TAG ── */
-.currency-tag {
-  font-family: var(--font-mono);
-  font-size: 10.5px; font-weight: 500;
-  background: var(--bg-raised);
-  color: var(--text-sec);
-  border: 1px solid var(--border-sub);
-  border-radius: 4px;
-  padding: 3px 8px;
-  letter-spacing: 0.5px;
-}
+.currency-tag { font-family: var(--font-mono); font-size: 10.5px; font-weight: 500; background: var(--bg-raised); color: var(--text-sec); border: 1px solid var(--border-sub); border-radius: 4px; padding: 3px 8px; letter-spacing: 0.5px; }
 
-/* ── BADGES ── */
-.badge {
-  display: inline-flex; align-items: center; gap: 5px;
-  font-family: var(--font-mono);
-  font-size: 11px; font-weight: 500;
-  border-radius: 100px;
-  padding: 3px 10px;
-  letter-spacing: 0.3px;
-  white-space: nowrap;
-}
+.badge { display: inline-flex; align-items: center; gap: 5px; font-family: var(--font-mono); font-size: 11px; font-weight: 500; border-radius: 100px; padding: 3px 10px; letter-spacing: 0.3px; white-space: nowrap; }
 .badge::before { content: ''; width: 5px; height: 5px; border-radius: 50%; }
-
 .badge-green { background: var(--green-bg); color: var(--green-text); border: 1px solid var(--green-border); }
 .badge-green::before { background: var(--green); box-shadow: 0 0 4px var(--green); }
-
 .badge-amber { background: var(--amber-bg); color: var(--amber-text); border: 1px solid var(--amber-border); }
 .badge-amber::before { background: var(--amber); }
-
 .badge-red { background: var(--red-bg); color: var(--red-text); border: 1px solid var(--red-border); }
 .badge-red::before { background: var(--red); }
 
-/* hidden helper classes that existed in original */
-.status-pending, .status-approved, .status-rejected,
-.due-overdue, .due-due-soon, .due-active { display: none; }
-
-/* ════════════════════════════════════════════
-   INVOICE DETAILS PANEL
-════════════════════════════════════════════ */
+/* INVOICE DETAILS PANEL */
 #invoiceDetails { animation: revealUp 0.3s cubic-bezier(0.16,1,0.3,1); }
-@keyframes revealUp {
-  from { opacity: 0; transform: translateY(12px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
+@keyframes revealUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
 
-.detail-panel {
-  background: var(--bg-surface);
-  border: 1px solid var(--border-sub);
-  border-radius: var(--r-xl);
-  padding: 28px 32px;
-  position: relative; overflow: hidden;
-}
-.detail-panel::before {
-  content: '';
-  position: absolute; top: 0; left: 0; right: 0; height: 1px;
-  background: linear-gradient(90deg, transparent, var(--cyan), var(--blue), transparent);
-  opacity: 0.4;
-}
-
-.detail-panel-header {
-  display: flex; align-items: center; justify-content: space-between;
-  margin-bottom: 24px; padding-bottom: 18px;
-  border-bottom: 1px solid var(--border-sub);
-}
-.detail-panel-header h2 {
-  font-family: var(--font-display);
-  font-size: 17px; font-weight: 800;
-  color: var(--text-ultra); letter-spacing: -0.4px;
-}
+.detail-panel { background: var(--bg-surface); border: 1px solid var(--border-sub); border-radius: var(--r-xl); padding: 28px 32px; position: relative; overflow: hidden; }
+.detail-panel::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--cyan), var(--blue), transparent); opacity: 0.4; }
+.detail-panel-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; padding-bottom: 18px; border-bottom: 1px solid var(--border-sub); }
+.detail-panel-header h2 { font-family: var(--font-display); font-size: 17px; font-weight: 800; color: var(--text-ultra); letter-spacing: -0.4px; }
 .detail-panel-actions { display: flex; gap: 10px; align-items: center; }
-
-.detail-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 18px 32px;
-}
-.detail-field label {
-  display: block;
-  font-family: var(--font-mono);
-  font-size: 10px; font-weight: 500;
-  color: var(--text-mute);
-  text-transform: uppercase; letter-spacing: 1px;
-  margin-bottom: 6px;
-}
-.detail-field span {
-  font-size: 13.5px; font-weight: 500;
-  color: var(--text-prime);
-}
-
-.btn-edit {
-  background: rgba(61,122,255,0.10);
-  color: var(--blue-bright);
-  border: 1px solid rgba(61,122,255,0.25);
-  font-size: 12.5px; padding: 7px 14px;
-}
+.detail-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 18px 32px; }
+.detail-field label { display: block; font-family: var(--font-mono); font-size: 10px; font-weight: 500; color: var(--text-mute); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+.detail-field span { font-size: 13.5px; font-weight: 500; color: var(--text-prime); }
+.btn-edit { background: rgba(61,122,255,0.10); color: var(--blue-bright); border: 1px solid rgba(61,122,255,0.25); font-size: 12.5px; padding: 7px 14px; }
 .btn-edit:hover { background: rgba(61,122,255,0.18); border-color: rgba(61,122,255,0.40); transform: translateY(-1px); box-shadow: 0 4px 16px rgba(61,122,255,0.20); }
-
-.btn-view-pdf {
-  background: var(--bg-raised);
-  color: var(--text-prime);
-  border: 1px solid var(--border-mid);
-  font-size: 12.5px; padding: 7px 14px;
-}
+.btn-view-pdf { background: var(--bg-raised); color: var(--text-prime); border: 1px solid var(--border-mid); font-size: 12.5px; padding: 7px 14px; }
 .btn-view-pdf:hover { background: var(--bg-float); border-color: var(--border-hi); color: var(--text-ultra); transform: translateY(-1px); }
 
-/* ════════════════════════════════════════════
-   CONFIDENCE BADGE
-════════════════════════════════════════════ */
-.confidence-badge {
-  display: inline-flex; align-items: center; gap: 6px;
-  font-family: var(--font-mono);
-  font-size: 11.5px; font-weight: 500;
-  border-radius: 100px;
-  padding: 4px 11px;
-  letter-spacing: 0.3px;
-  white-space: nowrap;
-  cursor: pointer; border: 1px solid;
-  transition: all var(--transition-fast);
-  position: relative; overflow: hidden;
-}
-.confidence-badge::after {
-  content: '';
-  position: absolute; inset: 0;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent);
-  transform: translateX(-100%);
-  transition: transform 0.4s ease;
-}
+/* CONFIDENCE BADGE */
+.confidence-badge { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-mono); font-size: 11.5px; font-weight: 500; border-radius: 100px; padding: 4px 11px; letter-spacing: 0.3px; white-space: nowrap; cursor: pointer; border: 1px solid; transition: all var(--transition-fast); position: relative; overflow: hidden; }
+.confidence-badge::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent); transform: translateX(-100%); transition: transform 0.4s ease; }
 .confidence-badge:hover::after { transform: translateX(100%); }
 .confidence-badge:hover { transform: translateY(-1px); }
-
 .conf-high   { background: var(--green-bg); color: var(--green-text); border-color: var(--green-border); }
 .conf-high:hover { box-shadow: 0 4px 16px rgba(0,229,160,0.20); }
 .conf-medium { background: var(--amber-bg); color: var(--amber-text); border-color: var(--amber-border); }
 .conf-medium:hover { box-shadow: 0 4px 16px rgba(245,158,11,0.20); }
 .conf-low    { background: var(--red-bg);   color: var(--red-text);   border-color: var(--red-border); }
 .conf-low:hover { box-shadow: 0 4px 16px rgba(255,77,106,0.20); }
-
-.conf-dot {
-  width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0;
-}
+.conf-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
 .conf-high   .conf-dot { background: var(--green); box-shadow: 0 0 4px var(--green); }
 .conf-medium .conf-dot { background: var(--amber); }
 .conf-low    .conf-dot { background: var(--red); }
-
 .conf-ai-icon { width: 11px; height: 11px; opacity: 0.55; flex-shrink: 0; }
 
-/* ════════════════════════════════════════════
-   MODAL BACKDROP
-════════════════════════════════════════════ */
-.modal-backdrop {
-  position: fixed; inset: 0;
-  background: rgba(2,4,9,0.75);
-  backdrop-filter: blur(12px) saturate(150%);
-  -webkit-backdrop-filter: blur(12px) saturate(150%);
-  z-index: 300;
-  display: flex; align-items: center; justify-content: center;
-  padding: 20px;
-  opacity: 0; transition: opacity 0.22s ease;
-  pointer-events: none;
-}
+/* MODALS */
+.modal-backdrop { position: fixed; inset: 0; background: rgba(2,4,9,0.75); backdrop-filter: blur(12px) saturate(150%); -webkit-backdrop-filter: blur(12px) saturate(150%); z-index: 300; display: flex; align-items: center; justify-content: center; padding: 20px; opacity: 0; transition: opacity 0.22s ease; pointer-events: none; }
 .modal-backdrop.visible { opacity: 1; pointer-events: all; }
-
-.modal-card {
-  background: var(--bg-surface);
-  border: 1px solid var(--border-mid);
-  border-radius: 20px;
-  box-shadow: 0 40px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(61,122,255,0.08);
-  width: 100%;
-  transform: translateY(20px) scale(0.97);
-  transition: transform 0.28s cubic-bezier(0.16,1,0.3,1), opacity 0.22s ease;
-  opacity: 0;
-  position: relative; overflow: hidden;
-}
-.modal-card::before {
-  content: '';
-  position: absolute; top: 0; left: 0; right: 0; height: 1px;
-  background: linear-gradient(90deg, transparent, var(--blue), var(--cyan), transparent);
-  opacity: 0.5;
-}
+.modal-card { background: var(--bg-surface); border: 1px solid var(--border-mid); border-radius: 20px; box-shadow: 0 40px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(61,122,255,0.08); width: 100%; transform: translateY(20px) scale(0.97); transition: transform 0.28s cubic-bezier(0.16,1,0.3,1), opacity 0.22s ease; opacity: 0; position: relative; overflow: hidden; }
+.modal-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--blue), var(--cyan), transparent); opacity: 0.5; }
 .modal-backdrop.visible .modal-card { transform: translateY(0) scale(1); opacity: 1; }
-
 #editModalBackdrop .modal-card { max-width: 560px; }
 #aiModalBackdrop   .modal-card { max-width: 540px; }
-
-/* Modal Header */
-.modal-header {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 24px 28px 0;
-}
+.modal-header { display: flex; align-items: center; justify-content: space-between; padding: 24px 28px 0; }
 .modal-header-left { display: flex; align-items: center; gap: 14px; }
-.modal-header-icon {
-  width: 40px; height: 40px;
-  border-radius: var(--r-md);
-  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-}
+.modal-header-icon { width: 40px; height: 40px; border-radius: var(--r-md); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 .modal-header-icon-blue { background: rgba(61,122,255,0.12); color: var(--blue-bright); border: 1px solid rgba(61,122,255,0.20); }
 .modal-header-icon-violet { background: rgba(139,92,246,0.12); color: #a78bfa; border: 1px solid rgba(139,92,246,0.20); }
-
-.modal-title {
-  font-family: var(--font-display);
-  font-size: 17px; font-weight: 800;
-  color: var(--text-ultra); letter-spacing: -0.3px;
-}
+.modal-title { font-family: var(--font-display); font-size: 17px; font-weight: 800; color: var(--text-ultra); letter-spacing: -0.3px; }
 .modal-subtitle { font-size: 12px; color: var(--text-mute); margin-top: 2px; }
-
-.modal-close-btn {
-  width: 34px; height: 34px;
-  background: var(--bg-raised); border: 1px solid var(--border-sub);
-  border-radius: var(--r-sm); cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  transition: all var(--transition-fast);
-  color: var(--text-mute); flex-shrink: 0;
-}
+.modal-close-btn { width: 34px; height: 34px; background: var(--bg-raised); border: 1px solid var(--border-sub); border-radius: var(--r-sm); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all var(--transition-fast); color: var(--text-mute); flex-shrink: 0; }
 .modal-close-btn:hover { background: var(--red-bg); color: var(--red-text); border-color: var(--red-border); }
-
 .modal-divider { height: 1px; background: var(--border-sub); margin: 22px 28px 0; }
-
-/* Edit Modal Body */
 .edit-modal-body { padding: 24px 28px; display: flex; flex-direction: column; gap: 18px; }
-
 .form-field { display: flex; flex-direction: column; gap: 7px; }
-.form-label {
-  font-family: var(--font-mono);
-  font-size: 11px; font-weight: 500;
-  color: var(--text-sec);
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-  display: flex; align-items: center; gap: 4px;
-}
+.form-label { font-family: var(--font-mono); font-size: 11px; font-weight: 500; color: var(--text-sec); letter-spacing: 0.5px; text-transform: uppercase; display: flex; align-items: center; gap: 4px; }
 .form-label-required { color: var(--blue-bright); font-size: 14px; line-height: 1; }
-
-.form-input {
-  font-family: var(--font-body); font-size: 14px; color: var(--text-ultra);
-  background: var(--bg-raised);
-  border: 1.5px solid var(--border-sub);
-  border-radius: var(--r-sm);
-  padding: 11px 14px; outline: none;
-  transition: all var(--transition-fast);
-  width: 100%; height: 44px;
-}
+.form-input { font-family: var(--font-body); font-size: 14px; color: var(--text-ultra); background: var(--bg-raised); border: 1.5px solid var(--border-sub); border-radius: var(--r-sm); padding: 11px 14px; outline: none; transition: all var(--transition-fast); width: 100%; height: 44px; }
 .form-input::placeholder { color: var(--text-mute); }
 .form-input:hover { border-color: var(--border-mid); background: var(--bg-float); }
 .form-input:focus { border-color: var(--blue); background: var(--bg-float); box-shadow: 0 0 0 3px rgba(61,122,255,0.12); }
 .form-input.input-error { border-color: var(--red); box-shadow: 0 0 0 3px rgba(255,77,106,0.12); }
-
-.form-error-msg {
-  font-size: 11.5px; color: var(--red-text);
-  font-weight: 500; display: none; align-items: center; gap: 4px;
-}
+.form-error-msg { font-size: 11.5px; color: var(--red-text); font-weight: 500; display: none; align-items: center; gap: 4px; }
 .form-error-msg.visible { display: flex; }
 .form-hint { font-size: 11.5px; color: var(--text-mute); }
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-
-.modal-footer {
-  padding: 0 28px 24px;
-  display: flex; align-items: center; justify-content: space-between; gap: 12px;
-}
+.modal-footer { padding: 0 28px 24px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 .modal-footer-left { display: flex; align-items: center; gap: 6px; }
 .footer-hint { font-size: 11.5px; color: var(--text-mute); font-family: var(--font-mono); }
 .modal-footer-right { display: flex; align-items: center; gap: 10px; }
-
-.btn-modal-cancel {
-  background: var(--bg-raised); color: var(--text-sec);
-  border: 1.5px solid var(--border-mid); padding: 9px 18px; font-size: 13px;
-}
+.btn-modal-cancel { background: var(--bg-raised); color: var(--text-sec); border: 1.5px solid var(--border-mid); padding: 9px 18px; font-size: 13px; }
 .btn-modal-cancel:hover { background: var(--bg-float); color: var(--text-prime); border-color: var(--border-hi); }
-
-.btn-modal-save {
-  background: linear-gradient(135deg, var(--blue), var(--blue-bright));
-  color: #fff; border: none; padding: 10px 22px; font-size: 13px;
-  min-width: 130px; justify-content: center;
-  box-shadow: 0 4px 20px rgba(61,122,255,0.30);
-}
+.btn-modal-save { background: linear-gradient(135deg, var(--blue), var(--blue-bright)); color: #fff; border: none; padding: 10px 22px; font-size: 13px; min-width: 130px; justify-content: center; box-shadow: 0 4px 20px rgba(61,122,255,0.30); }
 .btn-modal-save:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(61,122,255,0.40); }
 .btn-modal-save:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-
-.save-spinner {
-  width: 14px; height: 14px;
-  border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff;
-  border-radius: 50%; animation: spin 0.65s linear infinite; display: none;
-}
+.save-spinner { width: 14px; height: 14px; border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; animation: spin 0.65s linear infinite; display: none; }
 .btn-modal-save.saving .save-spinner { display: block; }
 .btn-modal-save.saving .save-label  { display: none; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* ════════════════════════════════════════════
-   AI VALIDATION MODAL
-════════════════════════════════════════════ */
+/* AI VALIDATION MODAL */
 .ai-modal-body { padding: 22px 28px 10px; display: flex; flex-direction: column; gap: 18px; }
-
-.ai-score-row {
-  display: flex; align-items: center; gap: 20px;
-  background: var(--bg-raised);
-  border: 1px solid var(--border-sub);
-  border-radius: var(--r-lg);
-  padding: 18px 20px;
-}
-
+.ai-score-row { display: flex; align-items: center; gap: 20px; background: var(--bg-raised); border: 1px solid var(--border-sub); border-radius: var(--r-lg); padding: 18px 20px; }
 .ai-score-ring { position: relative; width: 68px; height: 68px; flex-shrink: 0; }
 .ai-score-ring svg { transform: rotate(-90deg); }
 .ai-score-ring-track { fill: none; stroke: var(--border-sub); stroke-width: 5; }
 .ai-score-ring-fill  { fill: none; stroke-width: 5; stroke-linecap: round; transition: stroke-dashoffset 0.7s cubic-bezier(0.16,1,0.3,1); }
-.ai-score-ring-label {
-  position: absolute; inset: 0;
-  display: flex; align-items: center; justify-content: center;
-  font-family: var(--font-mono);
-  font-size: 14px; font-weight: 500;
-}
-
+.ai-score-ring-label { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 14px; font-weight: 500; }
 .ai-score-details { flex: 1; min-width: 0; }
 .ai-score-heading { font-family: var(--font-display); font-size: 13px; font-weight: 700; color: var(--text-ultra); margin-bottom: 5px; }
 .ai-score-desc { font-size: 12px; color: var(--text-mute); line-height: 1.6; }
-
-.ai-score-badge-large {
-  display: inline-flex; align-items: center; gap: 6px;
-  font-size: 22px; font-weight: 400;
-  font-family: var(--font-mono);
-  border-radius: var(--r-sm);
-  padding: 8px 16px;
-  letter-spacing: -1px;
-  flex-shrink: 0;
-  border: 1px solid;
-}
+.ai-score-badge-large { display: inline-flex; align-items: center; gap: 6px; font-size: 22px; font-weight: 400; font-family: var(--font-mono); border-radius: var(--r-sm); padding: 8px 16px; letter-spacing: -1px; flex-shrink: 0; border: 1px solid; }
 .ai-score-badge-large.badge-green { background: var(--green-bg); color: var(--green-text); border-color: var(--green-border); }
 .ai-score-badge-large.badge-amber { background: var(--amber-bg); color: var(--amber-text); border-color: var(--amber-border); }
 .ai-score-badge-large.badge-red   { background: var(--red-bg);   color: var(--red-text);   border-color: var(--red-border); }
-
-.ai-notes-label {
-  display: flex; align-items: center; gap: 7px;
-  font-family: var(--font-mono);
-  font-size: 10px; font-weight: 500;
-  color: var(--text-mute);
-  text-transform: uppercase; letter-spacing: 1px;
-  margin-bottom: 10px;
-}
-
-.ai-notes-box {
-  background: var(--bg-raised);
-  border: 1px solid var(--border-sub);
-  border-radius: var(--r-sm);
-  padding: 14px 16px;
-  font-family: var(--font-mono);
-  font-size: 12.5px; line-height: 1.75;
-  color: var(--text-sec);
-  max-height: 200px; overflow-y: auto;
-  white-space: pre-wrap; word-break: break-word;
-}
-
-.ai-legend {
-  display: flex; align-items: center; gap: 18px; flex-wrap: wrap;
-  padding: 12px 14px;
-  background: var(--bg-raised);
-  border: 1px solid var(--border-dim);
-  border-radius: var(--r-sm);
-}
-.ai-legend-item {
-  display: flex; align-items: center; gap: 6px;
-  font-family: var(--font-mono);
-  font-size: 11px; color: var(--text-mute); font-weight: 400;
-}
+.ai-notes-label { display: flex; align-items: center; gap: 7px; font-family: var(--font-mono); font-size: 10px; font-weight: 500; color: var(--text-mute); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
+.ai-notes-box { background: var(--bg-raised); border: 1px solid var(--border-sub); border-radius: var(--r-sm); padding: 14px 16px; font-family: var(--font-mono); font-size: 12.5px; line-height: 1.75; color: var(--text-sec); max-height: 200px; overflow-y: auto; white-space: pre-wrap; word-break: break-word; }
+.ai-legend { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; padding: 12px 14px; background: var(--bg-raised); border: 1px solid var(--border-dim); border-radius: var(--r-sm); }
+.ai-legend-item { display: flex; align-items: center; gap: 6px; font-family: var(--font-mono); font-size: 11px; color: var(--text-mute); font-weight: 400; }
 .ai-legend-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
-
 .ai-modal-footer { padding: 16px 28px 24px; display: flex; justify-content: flex-end; }
-.btn-ai-close {
-  background: var(--bg-raised); color: var(--text-sec);
-  border: 1.5px solid var(--border-mid); padding: 9px 20px; font-size: 13px;
-}
+.btn-ai-close { background: var(--bg-raised); color: var(--text-sec); border: 1.5px solid var(--border-mid); padding: 9px 20px; font-size: 13px; }
 .btn-ai-close:hover { background: var(--bg-float); color: var(--text-prime); border-color: var(--border-hi); }
 
-/* ── SUCCESS TOAST ── */
-.save-success-toast {
-  position: fixed; bottom: 32px; right: 32px;
-  background: var(--bg-float);
-  border: 1px solid var(--green-border);
-  color: var(--green-text);
-  font-family: var(--font-mono);
-  font-size: 12.5px; font-weight: 500;
-  padding: 12px 20px;
-  border-radius: var(--r-md);
-  box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 20px rgba(0,229,160,0.10);
-  display: flex; align-items: center; gap: 8px;
-  z-index: 400; opacity: 0; transform: translateY(12px);
-  transition: opacity 0.22s, transform 0.22s;
-  pointer-events: none;
-}
+/* SUCCESS TOAST */
+.save-success-toast { position: fixed; bottom: 32px; right: 32px; background: var(--bg-float); border: 1px solid var(--green-border); color: var(--green-text); font-family: var(--font-mono); font-size: 12.5px; font-weight: 500; padding: 12px 20px; border-radius: var(--r-md); box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 20px rgba(0,229,160,0.10); display: flex; align-items: center; gap: 8px; z-index: 400; opacity: 0; transform: translateY(12px); transition: opacity 0.22s, transform 0.22s; pointer-events: none; }
 .save-success-toast.show { opacity: 1; transform: translateY(0); }
 
-/* ════════════════════════════════════════════
-   PDF VIEWER PANEL
-════════════════════════════════════════════ */
-.pdf-overlay {
-  position: fixed; inset: 0; z-index: 400;
-  display: flex; opacity: 0;
-  transition: opacity 0.25s ease;
-  pointer-events: none;
-}
+/* PDF VIEWER */
+.pdf-overlay { position: fixed; inset: 0; z-index: 400; display: flex; opacity: 0; transition: opacity 0.25s ease; pointer-events: none; }
 .pdf-overlay.visible { opacity: 1; pointer-events: all; }
-
-.pdf-overlay-scrim {
-  flex: 1;
-  background: rgba(2,4,9,0.60);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  cursor: pointer;
-}
-
-.pdf-panel {
-  width: min(860px, 100vw);
-  height: 100%;
-  background: var(--bg-surface);
-  border-left: 1px solid var(--border-mid);
-  display: flex; flex-direction: column;
-  box-shadow: -20px 0 80px rgba(0,0,0,0.5);
-  transform: translateX(100%);
-  transition: transform 0.32s cubic-bezier(0.16,1,0.3,1);
-  position: relative; flex-shrink: 0;
-}
+.pdf-overlay-scrim { flex: 1; background: rgba(2,4,9,0.60); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); cursor: pointer; }
+.pdf-panel { width: min(860px, 100vw); height: 100%; background: var(--bg-surface); border-left: 1px solid var(--border-mid); display: flex; flex-direction: column; box-shadow: -20px 0 80px rgba(0,0,0,0.5); transform: translateX(100%); transition: transform 0.32s cubic-bezier(0.16,1,0.3,1); position: relative; flex-shrink: 0; }
 .pdf-overlay.visible .pdf-panel { transform: translateX(0); }
-
-.pdf-panel-topbar {
-  background: var(--bg-raised);
-  border-bottom: 1px solid var(--border-sub);
-  padding: 0 20px;
-  height: 58px;
-  display: flex; align-items: center; gap: 14px;
-  flex-shrink: 0;
-}
-.pdf-panel-icon {
-  width: 36px; height: 36px;
-  background: var(--red-bg);
-  border: 1px solid var(--red-border);
-  border-radius: var(--r-sm);
-  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-  color: var(--red-text);
-}
-
+.pdf-panel-topbar { background: var(--bg-raised); border-bottom: 1px solid var(--border-sub); padding: 0 20px; height: 58px; display: flex; align-items: center; gap: 14px; flex-shrink: 0; }
+.pdf-panel-icon { width: 36px; height: 36px; background: var(--red-bg); border: 1px solid var(--red-border); border-radius: var(--r-sm); display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--red-text); }
 .pdf-panel-info { flex: 1; min-width: 0; }
-.pdf-panel-title {
-  font-family: var(--font-display);
-  font-size: 13.5px; font-weight: 700; color: var(--text-ultra);
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-}
+.pdf-panel-title { font-family: var(--font-display); font-size: 13.5px; font-weight: 700; color: var(--text-ultra); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .pdf-panel-meta { font-family: var(--font-mono); font-size: 11px; color: var(--text-mute); }
-
 .pdf-panel-topbar-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
-
-.pdf-toolbar-btn {
-  font-family: var(--font-body); font-size: 12px; font-weight: 600;
-  border-radius: var(--r-sm); padding: 7px 14px; cursor: pointer;
-  display: inline-flex; align-items: center; gap: 5px;
-  transition: all var(--transition-fast); white-space: nowrap; border: none;
-  text-decoration: none;
-}
-.pdf-open-btn {
-  background: rgba(61,122,255,0.10); color: var(--blue-bright);
-  border: 1px solid rgba(61,122,255,0.25);
-}
+.pdf-toolbar-btn { font-family: var(--font-body); font-size: 12px; font-weight: 600; border-radius: var(--r-sm); padding: 7px 14px; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; transition: all var(--transition-fast); white-space: nowrap; border: none; text-decoration: none; }
+.pdf-open-btn { background: rgba(61,122,255,0.10); color: var(--blue-bright); border: 1px solid rgba(61,122,255,0.25); }
 .pdf-open-btn:hover { background: rgba(61,122,255,0.18); transform: translateY(-1px); box-shadow: 0 4px 14px rgba(61,122,255,0.20); }
-
-.pdf-close-btn {
-  width: 36px; height: 36px; padding: 0;
-  background: var(--bg-float); color: var(--text-mute);
-  border: 1px solid var(--border-sub);
-  border-radius: var(--r-sm);
-  display: flex; align-items: center; justify-content: center;
-  cursor: pointer; transition: all var(--transition-fast);
-}
+.pdf-close-btn { width: 36px; height: 36px; padding: 0; background: var(--bg-float); color: var(--text-mute); border: 1px solid var(--border-sub); border-radius: var(--r-sm); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all var(--transition-fast); }
 .pdf-close-btn:hover { background: var(--red-bg); color: var(--red-text); border-color: var(--red-border); }
-
-.pdf-meta-strip {
-  background: var(--bg-raised);
-  border-bottom: 1px solid var(--border-sub);
-  padding: 10px 20px;
-  display: flex; align-items: center; gap: 24px;
-  flex-shrink: 0; flex-wrap: wrap;
-}
+.pdf-meta-strip { background: var(--bg-raised); border-bottom: 1px solid var(--border-sub); padding: 10px 20px; display: flex; align-items: center; gap: 24px; flex-shrink: 0; flex-wrap: wrap; }
 .pdf-meta-item { display: flex; align-items: center; gap: 7px; }
-.pdf-meta-label {
-  font-family: var(--font-mono);
-  font-size: 10px; font-weight: 500; color: var(--text-mute);
-  text-transform: uppercase; letter-spacing: 0.8px;
-}
-.pdf-meta-value {
-  font-family: var(--font-mono);
-  font-size: 12px; font-weight: 400; color: var(--text-prime);
-}
+.pdf-meta-label { font-family: var(--font-mono); font-size: 10px; font-weight: 500; color: var(--text-mute); text-transform: uppercase; letter-spacing: 0.8px; }
+.pdf-meta-value { font-family: var(--font-mono); font-size: 12px; font-weight: 400; color: var(--text-prime); }
 .pdf-meta-divider { width: 1px; height: 16px; background: var(--border-sub); flex-shrink: 0; }
-
 .pdf-iframe-wrap { flex: 1; overflow: hidden; position: relative; background: #0a0d16; }
 .pdf-iframe-wrap iframe { width: 100%; height: 100%; border: none; display: block; }
-
-.pdf-loading-overlay {
-  position: absolute; inset: 0;
-  background: var(--bg-surface);
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  gap: 14px; z-index: 2; transition: opacity 0.3s;
-}
+.pdf-loading-overlay { position: absolute; inset: 0; background: var(--bg-surface); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; z-index: 2; transition: opacity 0.3s; }
 .pdf-loading-overlay.hidden { opacity: 0; pointer-events: none; }
-
-.pdf-loading-spinner {
-  width: 36px; height: 36px;
-  border: 2px solid var(--border-sub); border-top-color: var(--blue);
-  border-radius: 50%; animation: spin 0.8s linear infinite;
-}
+.pdf-loading-spinner { width: 36px; height: 36px; border: 2px solid var(--border-sub); border-top-color: var(--blue); border-radius: 50%; animation: spin 0.8s linear infinite; }
 .pdf-loading-text { font-family: var(--font-mono); font-size: 12px; color: var(--text-mute); }
-
-.pdf-error-state {
-  position: absolute; inset: 0; background: var(--bg-surface);
-  display: none; flex-direction: column; align-items: center; justify-content: center;
-  gap: 12px; padding: 32px; text-align: center;
-}
+.pdf-error-state { position: absolute; inset: 0; background: var(--bg-surface); display: none; flex-direction: column; align-items: center; justify-content: center; gap: 12px; padding: 32px; text-align: center; }
 .pdf-error-state.visible { display: flex; }
 .pdf-error-icon { width: 52px; height: 52px; background: var(--red-bg); border: 1px solid var(--red-border); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--red-text); }
 .pdf-error-title { font-family: var(--font-display); font-size: 15px; font-weight: 700; color: var(--text-ultra); }
 .pdf-error-desc  { font-size: 13px; color: var(--text-mute); max-width: 300px; }
 
-/* ════════════════════════════════════════════
-   REVEAL ANIMATIONS
-════════════════════════════════════════════ */
-.reveal {
-  opacity: 0; transform: translateY(20px);
-  transition: opacity 0.6s cubic-bezier(0.16,1,0.3,1), transform 0.6s cubic-bezier(0.16,1,0.3,1);
-}
+/* REVEAL ANIMATIONS */
+.reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.6s cubic-bezier(0.16,1,0.3,1), transform 0.6s cubic-bezier(0.16,1,0.3,1); }
 .reveal.visible { opacity: 1; transform: translateY(0); }
 
-/* ════════════════════════════════════════════
-   GRID SCAN LINE EFFECT on table
-════════════════════════════════════════════ */
-@keyframes scanLine {
-  0%   { top: 0%; opacity: 0; }
-  5%   { opacity: 1; }
-  95%  { opacity: 1; }
-  100% { top: 100%; opacity: 0; }
-}
-.table-scan-line {
-  position: absolute; left: 0; right: 0; height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(61,122,255,0.4), transparent);
-  pointer-events: none;
-  animation: scanLine 6s ease-in-out infinite;
-  z-index: 1;
-}
+@keyframes scanLine { 0% { top: 0%; opacity: 0; } 5% { opacity: 1; } 95% { opacity: 1; } 100% { top: 100%; opacity: 0; } }
+.table-scan-line { position: absolute; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(61,122,255,0.4), transparent); pointer-events: none; animation: scanLine 6s ease-in-out infinite; z-index: 1; }
 
-/* ════════════════════════════════════════════
-   RESPONSIVE
-════════════════════════════════════════════ */
-@media (max-width: 1200px) {
-  .kpi-grid-4 { grid-template-columns: repeat(2, 1fr); }
-  .kpi-row-3  { grid-template-columns: 1fr 1fr; }
-}
-@media (max-width: 900px) {
-  .main { padding: 24px 20px 60px; }
-  .header { padding: 0 20px; }
-}
-@media (max-width: 768px) {
-  .kpi-grid-4, .kpi-grid-3 { grid-template-columns: repeat(2, 1fr); }
-  .kpi-row-3 { grid-template-columns: 1fr; }
-  .pdf-panel { width: 100vw; }
-  .pdf-overlay-scrim { display: none; }
-  .pdf-meta-strip { display: none; }
-}
-@media (max-width: 480px) {
-  .kpi-grid-4, .kpi-grid-3 { grid-template-columns: 1fr; }
-  .filter-group { flex-direction: column; align-items: stretch; }
-  .filter-actions { flex-direction: column; align-items: stretch; width: 100%; }
-}
+/* RESPONSIVE */
+@media (max-width: 1200px) { .kpi-grid-4 { grid-template-columns: repeat(2, 1fr); } .kpi-row-3 { grid-template-columns: 1fr 1fr; } .token-summary-row { grid-template-columns: repeat(3, 1fr); } .token-body { grid-template-columns: 1fr; } .token-body-right { max-height: 300px; border-right: none; border-top: 1px solid var(--border-sub); } }
+@media (max-width: 900px) { .main { padding: 24px 20px 60px; } .header { padding: 0 20px; } }
+@media (max-width: 768px) { .kpi-grid-4, .kpi-grid-3 { grid-template-columns: repeat(2, 1fr); } .kpi-row-3 { grid-template-columns: 1fr; } .pdf-panel { width: 100vw; } .pdf-overlay-scrim { display: none; } .pdf-meta-strip { display: none; } .token-summary-row { grid-template-columns: repeat(2, 1fr); } .token-pricing-bar { display: none; } }
+@media (max-width: 480px) { .kpi-grid-4, .kpi-grid-3, .token-summary-row { grid-template-columns: 1fr; } .filter-group { flex-direction: column; align-items: stretch; } .filter-actions { flex-direction: column; align-items: stretch; width: 100%; } }
 
-/* ── SCROLLBAR ── */
 ::-webkit-scrollbar { width: 5px; height: 5px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--border-sub); border-radius: 10px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--border-mid); }
 
-/* ════════════════════════════════════════════
-   GRID DECORATION ON HEADER
-════════════════════════════════════════════ */
-.grid-bg {
-  position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: 0;
-  background-image:
-    linear-gradient(rgba(61,122,255,0.025) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(61,122,255,0.025) 1px, transparent 1px);
-  background-size: 50px 50px;
-  mask-image: radial-gradient(ellipse at center, rgba(0,0,0,0.5) 0%, transparent 70%);
-}
+.grid-bg { position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: 0; background-image: linear-gradient(rgba(61,122,255,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(61,122,255,0.025) 1px, transparent 1px); background-size: 50px 50px; mask-image: radial-gradient(ellipse at center, rgba(0,0,0,0.5) 0%, transparent 70%); }
 </style>
 </head>
 <body>
 
-<!-- Ambient background -->
 <div class="ambient-bg" aria-hidden="true">
   <div class="ambient-blob blob-1"></div>
   <div class="ambient-blob blob-2"></div>
   <div class="ambient-blob blob-3"></div>
 </div>
 
-<!-- Custom cursor -->
 <div class="cursor-dot" id="cursorDot"></div>
 <div class="cursor-ring" id="cursorRing"></div>
 
-<!-- ── HEADER ── -->
 <header class="header">
   <div class="header-brand">
     <div class="header-logo">
@@ -1290,7 +876,7 @@ select.filter-input { min-width: 150px; cursor: pointer; }
 
 <div class="main">
 
-  <!-- ── KPI SECTION ── -->
+  <!-- KPI SECTION -->
   <section class="kpi-section reveal">
     <div class="kpi-block">
       <div class="kpi-block-header">
@@ -1300,30 +886,22 @@ select.filter-input { min-width: 150px; cursor: pointer; }
       <div class="kpi-grid kpi-grid-4 kpi-primary">
         <div class="card card-primary">
           <div class="kpi-shimmer"></div>
-          <div class="card-icon card-icon-blue">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
-          </div>
+          <div class="card-icon card-icon-blue"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg></div>
           <h3>Total Invoices</h3><p id="invoiceCount">0</p><span class="card-label">All currencies</span>
         </div>
         <div class="card card-primary">
           <div class="kpi-shimmer"></div>
-          <div class="card-icon card-icon-blue">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-          </div>
+          <div class="card-icon card-icon-blue"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
           <h3>USD Total</h3><p id="usdTotal">0</p><span class="card-label">US Dollar</span>
         </div>
         <div class="card card-primary">
           <div class="kpi-shimmer"></div>
-          <div class="card-icon card-icon-blue">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-          </div>
+          <div class="card-icon card-icon-blue"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></div>
           <h3>INR Total</h3><p id="inrTotal">0</p><span class="card-label">Indian Rupee</span>
         </div>
         <div class="card card-primary">
           <div class="kpi-shimmer"></div>
-          <div class="card-icon card-icon-blue">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M14.31 8l5.74 9.94M9.69 8h11.48M7.38 12l5.74-9.94M9.69 16 3.95 6.06M14.31 16H2.83M16.62 12 10.88 21.94"/></svg>
-          </div>
+          <div class="card-icon card-icon-blue"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M14.31 8l5.74 9.94M9.69 8h11.48M7.38 12l5.74-9.94M9.69 16 3.95 6.06M14.31 16H2.83M16.62 12 10.88 21.94"/></svg></div>
           <h3>EUR Total</h3><p id="eurTotal">0</p><span class="card-label">Euro</span>
         </div>
       </div>
@@ -1331,43 +909,23 @@ select.filter-input { min-width: 150px; cursor: pointer; }
 
     <div class="kpi-row-3">
       <div class="kpi-block kpi-sub-block">
-        <div class="kpi-block-header">
-          <span class="kpi-block-title">Distribution</span>
-          <span class="kpi-block-subtitle">By currency</span>
-        </div>
+        <div class="kpi-block-header"><span class="kpi-block-title">Distribution</span><span class="kpi-block-subtitle">By currency</span></div>
         <div class="kpi-grid kpi-grid-3">
-          <div class="card">
-            <div class="card-icon card-icon-slate"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
-            <h3>USD</h3><p id="usdCount">0</p>
-          </div>
-          <div class="card">
-            <div class="card-icon card-icon-slate"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/></svg></div>
-            <h3>INR</h3><p id="inrCount">0</p>
-          </div>
-          <div class="card">
-            <div class="card-icon card-icon-slate"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/></svg></div>
-            <h3>EUR</h3><p id="eurCount">0</p>
-          </div>
+          <div class="card"><div class="card-icon card-icon-slate"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div><h3>USD</h3><p id="usdCount">0</p></div>
+          <div class="card"><div class="card-icon card-icon-slate"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/></svg></div><h3>INR</h3><p id="inrCount">0</p></div>
+          <div class="card"><div class="card-icon card-icon-slate"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/></svg></div><h3>EUR</h3><p id="eurCount">0</p></div>
         </div>
       </div>
-
       <div class="kpi-block kpi-sub-block">
-        <div class="kpi-block-header">
-          <span class="kpi-block-title">Approval Workflow</span>
-          <span class="kpi-block-subtitle">Review status</span>
-        </div>
+        <div class="kpi-block-header"><span class="kpi-block-title">Approval Workflow</span><span class="kpi-block-subtitle">Review status</span></div>
         <div class="kpi-grid kpi-grid-3">
           <div class="card card-status card-amber"><div class="status-dot dot-amber"></div><h3>Pending</h3><p id="pendingCount">0</p></div>
           <div class="card card-status card-green"><div class="status-dot dot-green"></div><h3>Approved</h3><p id="approvedCount">0</p></div>
           <div class="card card-status card-red"><div class="status-dot dot-red"></div><h3>Rejected</h3><p id="rejectedCount">0</p></div>
         </div>
       </div>
-
       <div class="kpi-block kpi-sub-block">
-        <div class="kpi-block-header">
-          <span class="kpi-block-title">Payment Health</span>
-          <span class="kpi-block-subtitle">Due date tracking</span>
-        </div>
+        <div class="kpi-block-header"><span class="kpi-block-title">Payment Health</span><span class="kpi-block-subtitle">Due date tracking</span></div>
         <div class="kpi-grid kpi-grid-3">
           <div class="card card-status card-green"><div class="status-dot dot-green"></div><h3>Active</h3><p id="activeCount">0</p></div>
           <div class="card card-status card-amber"><div class="status-dot dot-amber"></div><h3>Due Soon</h3><p id="dueSoonCount">0</p></div>
@@ -1377,17 +935,211 @@ select.filter-input { min-width: 150px; cursor: pointer; }
     </div>
   </section>
 
-  <!-- ── UPLOAD SECTION ── -->
+  <!-- ════════════════════════════════════════
+       TOKEN & COST TRACKING PANEL
+  ════════════════════════════════════════ -->
+  <section class="reveal" style="transition-delay:0.08s">
+    <div class="section-label">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--teal)"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+      Token &amp; Cost Intelligence
+    </div>
+    <div class="token-panel">
+
+      <!-- Header -->
+      <div class="token-panel-header">
+        <div class="token-panel-header-left">
+          <div class="token-panel-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          </div>
+          <div>
+            <div class="token-panel-title">AI Token &amp; Cost Tracker</div>
+            <div class="token-panel-subtitle">Real-time monitoring for cost optimization in production</div>
+          </div>
+        </div>
+        <div class="token-panel-actions">
+          <div class="token-model-tag">
+            <span class="token-model-dot"></span>
+            <span id="modelTagLabel">claude-3-5-sonnet</span>
+          </div>
+          <div class="token-session-badge">
+            <span class="token-session-dot"></span>
+            Session active
+          </div>
+          <button class="token-reset-btn" onclick="resetTokenTracking()">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.5"/></svg>
+            Reset
+          </button>
+        </div>
+      </div>
+
+      <!-- Summary row -->
+      <div class="token-summary-row">
+        <div class="token-summary-cell">
+          <div class="token-cell-label">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            Session Cost
+          </div>
+          <div class="token-cell-value highlight-cost" id="tc-session-cost">$0.0000</div>
+          <div class="token-cell-delta" id="tc-session-cost-delta">+$0.0000 last call</div>
+        </div>
+        <div class="token-summary-cell">
+          <div class="token-cell-label">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            Input Tokens
+          </div>
+          <div class="token-cell-value highlight-input" id="tc-input-tokens">0</div>
+          <div class="token-cell-delta" id="tc-input-delta">+0 last call</div>
+        </div>
+        <div class="token-summary-cell">
+          <div class="token-cell-label">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            Output Tokens
+          </div>
+          <div class="token-cell-value highlight-output" id="tc-output-tokens">0</div>
+          <div class="token-cell-delta" id="tc-output-delta">+0 last call</div>
+        </div>
+        <div class="token-summary-cell">
+          <div class="token-cell-label">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            Total Tokens
+          </div>
+          <div class="token-cell-value highlight-total" id="tc-total-tokens">0</div>
+          <div class="token-cell-delta" id="tc-total-delta">+0 last call</div>
+        </div>
+        <div class="token-summary-cell">
+          <div class="token-cell-label">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+            API Calls
+          </div>
+          <div class="token-cell-value" id="tc-api-calls">0</div>
+          <div class="token-cell-delta" id="tc-avg-cost">$0.0000 avg/call</div>
+        </div>
+      </div>
+
+      <!-- Pricing config bar -->
+      <div class="token-pricing-bar">
+        <span class="token-pricing-label">Pricing Config</span>
+        <div class="token-pricing-item">
+          <label for="priceInput">Input ($/1M tok)</label>
+          <input class="token-pricing-input" type="number" id="priceInput" value="3.00" step="0.01" min="0" onchange="recalcAllCosts()">
+        </div>
+        <div class="token-pricing-divider"></div>
+        <div class="token-pricing-item">
+          <label for="priceOutput">Output ($/1M tok)</label>
+          <input class="token-pricing-input" type="number" id="priceOutput" value="15.00" step="0.01" min="0" onchange="recalcAllCosts()">
+        </div>
+        <div class="token-pricing-divider"></div>
+        <div class="token-pricing-item">
+          <label for="priceModel">Model</label>
+          <select class="token-pricing-input" id="priceModel" style="width:180px" onchange="applyModelPreset()">
+            <option value="custom">Custom</option>
+            <option value="claude-3-5-sonnet" selected>claude-3-5-sonnet</option>
+            <option value="claude-3-5-haiku">claude-3-5-haiku</option>
+            <option value="claude-3-opus">claude-3-opus</option>
+            <option value="claude-3-sonnet">claude-3-sonnet</option>
+            <option value="claude-3-haiku">claude-3-haiku</option>
+            <option value="gpt-4o">GPT-4o</option>
+            <option value="gpt-4o-mini">GPT-4o mini</option>
+          </select>
+        </div>
+        <div class="token-pricing-divider"></div>
+        <div class="token-pricing-item">
+          <label for="budgetLimit">Budget Alert ($)</label>
+          <input class="token-pricing-input" type="number" id="budgetLimit" value="10.00" step="0.01" min="0" onchange="renderTokenPanel()">
+        </div>
+      </div>
+
+      <!-- Body -->
+      <div class="token-body">
+
+        <!-- Left: charts + breakdown -->
+        <div class="token-body-left">
+
+          <!-- Cost gauge vs budget -->
+          <div>
+            <div class="token-breakdown-title">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+              Budget Utilization
+            </div>
+            <div class="token-gauge-wrap">
+              <div class="token-gauge-row">
+                <div class="token-gauge-track"><div class="token-gauge-fill" id="tc-budget-fill" style="width:0%"></div></div>
+                <span class="token-gauge-pct" id="tc-budget-pct">0%</span>
+              </div>
+              <div style="display:flex;align-items:center;justify-content:space-between;">
+                <span style="font-family:var(--font-mono);font-size:11px;color:var(--text-mute)">$0</span>
+                <span style="font-family:var(--font-mono);font-size:11px;color:var(--text-mute)" id="tc-budget-max">$10.00 limit</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Token distribution bars -->
+          <div>
+            <div class="token-breakdown-title">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+              Token Distribution by Operation
+            </div>
+            <div class="token-bar-group" id="tc-op-bars">
+              <!-- Populated by JS -->
+            </div>
+          </div>
+
+          <!-- Cost sparkline -->
+          <div class="token-sparkline-wrap">
+            <div class="token-breakdown-title">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+              Cumulative Cost Over Calls
+            </div>
+            <svg class="token-sparkline-svg" id="tc-sparkline" viewBox="0 0 400 60" preserveAspectRatio="none">
+              <defs>
+                <linearGradient id="sparkGrad" x1="0" x2="0" y1="0" y2="1">
+                  <stop offset="0%" stop-color="#14b8a6" stop-opacity="0.6"/>
+                  <stop offset="100%" stop-color="#14b8a6" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              <path class="token-spark-area" id="tc-spark-area" d="M0,60 L400,60 Z"/>
+              <path class="token-spark-line" id="tc-spark-path" d=""/>
+            </svg>
+          </div>
+
+          <!-- Per-operation cards -->
+          <div>
+            <div class="token-breakdown-title">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96-.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 4.44-1.16z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96-.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-4.44-1.16z"/></svg>
+              Cost Per Operation Type
+            </div>
+            <div class="token-op-grid" id="tc-op-grid">
+              <!-- Populated by JS -->
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Right: activity log -->
+        <div class="token-body-right">
+          <div class="token-log-header">
+            <div class="token-log-title">
+              <span class="token-log-live-dot"></span>
+              API Call Log
+            </div>
+            <span class="token-log-count" id="tc-log-count">0 calls</span>
+          </div>
+          <div class="token-log-list" id="tc-log-list">
+            <div class="token-log-empty">No API calls recorded yet.<br>Upload a PDF to get started.</div>
+          </div>
+        </div>
+
+      </div><!-- /token-body -->
+    </div><!-- /token-panel -->
+  </section>
+
+  <!-- UPLOAD SECTION -->
   <section class="reveal" style="transition-delay:0.1s">
     <div class="section-label">Upload Invoice</div>
     <div class="upload-card">
       <div class="upload-inner">
         <div class="upload-icon">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-            <polyline points="17 8 12 3 7 8"/>
-            <line x1="12" y1="3" x2="12" y2="15"/>
-          </svg>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
         </div>
         <div class="upload-text">
           <h4>Upload Invoice PDF</h4>
@@ -1404,10 +1156,9 @@ select.filter-input { min-width: 150px; cursor: pointer; }
     </div>
   </section>
 
-  <!-- ── INVOICE DETAILS (dynamic) ── -->
   <div id="invoiceDetails"></div>
 
-  <!-- ── FILTERS SECTION ── -->
+  <!-- FILTERS -->
   <section class="reveal" style="transition-delay:0.15s">
     <div class="section-label">Filters &amp; Sort</div>
     <div class="filter-card">
@@ -1448,13 +1199,11 @@ select.filter-input { min-width: 150px; cursor: pointer; }
     </div>
   </section>
 
-  <!-- ── INVOICE TABLE ── -->
+  <!-- INVOICE TABLE -->
   <section class="reveal" style="transition-delay:0.2s">
     <div class="table-card">
       <div class="table-scan-line"></div>
-      <div class="table-card-header">
-        <h3>Invoices</h3>
-      </div>
+      <div class="table-card-header"><h3>Invoices</h3></div>
       <div class="table-wrapper">
         <table id="invoiceTable">
           <thead>
@@ -1483,18 +1232,13 @@ select.filter-input { min-width: 150px; cursor: pointer; }
 
 </div><!-- /main -->
 
-<!-- ════════════════════════════════════════════
-     EDIT MODAL
-════════════════════════════════════════════ -->
+<!-- EDIT MODAL -->
 <div class="modal-backdrop" id="editModalBackdrop" onclick="handleEditBackdropClick(event)">
   <div class="modal-card" id="editModal" role="dialog" aria-modal="true" aria-labelledby="editModalTitle">
     <div class="modal-header">
       <div class="modal-header-left">
         <div class="modal-header-icon modal-header-icon-blue">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
-            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
-          </svg>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
         </div>
         <div>
           <div class="modal-title" id="editModalTitle">Edit Invoice</div>
@@ -1511,72 +1255,49 @@ select.filter-input { min-width: 150px; cursor: pointer; }
       <div class="form-field">
         <label class="form-label" for="editVendorName">Vendor Name <span class="form-label-required">*</span></label>
         <input class="form-input" type="text" id="editVendorName" placeholder="e.g. Acme Corp Ltd">
-        <span class="form-error-msg" id="errVendorName">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-          Vendor name is required
-        </span>
+        <span class="form-error-msg" id="errVendorName"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>Vendor name is required</span>
       </div>
       <div class="form-row">
         <div class="form-field">
           <label class="form-label" for="editInvoiceDate">Invoice Date <span class="form-label-required">*</span></label>
           <input class="form-input" type="text" id="editInvoiceDate" placeholder="e.g. 2024-01-15">
-          <span class="form-error-msg" id="errInvoiceDate">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-            Invoice date is required
-          </span>
+          <span class="form-error-msg" id="errInvoiceDate"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>Invoice date is required</span>
         </div>
         <div class="form-field">
           <label class="form-label" for="editDueDate">Due Date <span class="form-label-required">*</span></label>
           <input class="form-input" type="text" id="editDueDate" placeholder="e.g. 2024-02-15">
-          <span class="form-error-msg" id="errDueDate">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-            Due date is required
-          </span>
+          <span class="form-error-msg" id="errDueDate"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>Due date is required</span>
         </div>
       </div>
       <div class="form-field">
         <label class="form-label" for="editTotalAmount">Total Amount <span class="form-label-required">*</span></label>
         <input class="form-input" type="text" id="editTotalAmount" placeholder="e.g. 12500.00">
-        <span class="form-error-msg" id="errTotalAmount">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-          Total amount is required
-        </span>
+        <span class="form-error-msg" id="errTotalAmount"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>Total amount is required</span>
         <span class="form-hint">Enter numeric value only — currency is stored separately</span>
       </div>
     </div>
     <div class="modal-footer">
       <div class="modal-footer-left">
-        <span class="footer-hint">
-          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-mute)"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-          Changes saved immediately
-        </span>
+        <span class="footer-hint"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-mute)"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>Changes saved immediately</span>
       </div>
       <div class="modal-footer-right">
         <button class="btn btn-modal-cancel" onclick="closeEditModal()">Cancel</button>
         <button class="btn btn-modal-save" id="saveBtn" onclick="saveInvoice()">
           <div class="save-spinner"></div>
-          <span class="save-label">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
-            Save Changes
-          </span>
+          <span class="save-label"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>Save Changes</span>
         </button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ════════════════════════════════════════════
-     AI VALIDATION MODAL
-════════════════════════════════════════════ -->
+<!-- AI VALIDATION MODAL -->
 <div class="modal-backdrop" id="aiModalBackdrop" onclick="handleAiBackdropClick(event)">
   <div class="modal-card" id="aiModal" role="dialog" aria-modal="true" aria-labelledby="aiModalTitle">
     <div class="modal-header">
       <div class="modal-header-left">
         <div class="modal-header-icon modal-header-icon-violet">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96-.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 4.44-1.16z"/>
-            <path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96-.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-4.44-1.16z"/>
-          </svg>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96-.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 4.44-1.16z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96-.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-4.44-1.16z"/></svg>
         </div>
         <div>
           <div class="modal-title" id="aiModalTitle">AI Validation Report</div>
@@ -1589,12 +1310,11 @@ select.filter-input { min-width: 150px; cursor: pointer; }
     </div>
     <div class="modal-divider"></div>
     <div class="ai-modal-body">
-      <div class="ai-score-row">  
+      <div class="ai-score-row">
         <div class="ai-score-ring">
           <svg width="68" height="68" viewBox="0 0 68 68">
             <circle class="ai-score-ring-track" cx="34" cy="34" r="27"/>
-            <circle class="ai-score-ring-fill" id="aiRingFill" cx="34" cy="34" r="27"
-              stroke-dasharray="169.6" stroke-dashoffset="169.6"/>
+            <circle class="ai-score-ring-fill" id="aiRingFill" cx="34" cy="34" r="27" stroke-dasharray="169.6" stroke-dashoffset="169.6"/>
           </svg>
           <div class="ai-score-ring-label" id="aiRingLabel">—</div>
         </div>
@@ -1605,10 +1325,7 @@ select.filter-input { min-width: 150px; cursor: pointer; }
         <div class="ai-score-badge-large" id="aiScoreBadgeLarge">—</div>
       </div>
       <div>
-        <div class="ai-notes-label">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-          Validation Notes
-        </div>
+        <div class="ai-notes-label"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Validation Notes</div>
         <div class="ai-notes-box" id="aiNotesBox">—</div>
       </div>
       <div class="ai-legend">
@@ -1624,28 +1341,19 @@ select.filter-input { min-width: 150px; cursor: pointer; }
   </div>
 </div>
 
-<!-- ════════════════════════════════════════════
-     PDF VIEWER PANEL
-════════════════════════════════════════════ -->
+<!-- PDF VIEWER -->
 <div class="pdf-overlay" id="pdfOverlay">
   <div class="pdf-overlay-scrim" onclick="closePdfViewer()"></div>
   <div class="pdf-panel" id="pdfPanel" role="dialog" aria-modal="true" aria-label="Invoice PDF Viewer">
     <div class="pdf-panel-topbar">
-      <div class="pdf-panel-icon">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-      </div>
+      <div class="pdf-panel-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></div>
       <div class="pdf-panel-info">
         <div class="pdf-panel-title" id="pdfPanelTitle">Invoice PDF</div>
         <div class="pdf-panel-meta" id="pdfPanelMeta">Original document</div>
       </div>
       <div class="pdf-panel-topbar-actions">
-        <a id="pdfOpenTabBtn" href="#" target="_blank" class="pdf-toolbar-btn pdf-open-btn">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-          Open in Tab
-        </a>
-        <button class="pdf-close-btn" onclick="closePdfViewer()" aria-label="Close PDF viewer">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-        </button>
+        <a id="pdfOpenTabBtn" href="#" target="_blank" class="pdf-toolbar-btn pdf-open-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>Open in Tab</a>
+        <button class="pdf-close-btn" onclick="closePdfViewer()" aria-label="Close PDF viewer"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
       </div>
     </div>
     <div class="pdf-meta-strip" id="pdfMetaStrip">
@@ -1660,10 +1368,7 @@ select.filter-input { min-width: 150px; cursor: pointer; }
       <div class="pdf-meta-item"><span class="pdf-meta-label">Due</span><span class="pdf-meta-value" id="pdfMetaDue">—</span></div>
     </div>
     <div class="pdf-iframe-wrap">
-      <div class="pdf-loading-overlay" id="pdfLoadingOverlay">
-        <div class="pdf-loading-spinner"></div>
-        <span class="pdf-loading-text">Loading document…</span>
-      </div>
+      <div class="pdf-loading-overlay" id="pdfLoadingOverlay"><div class="pdf-loading-spinner"></div><span class="pdf-loading-text">Loading document…</span></div>
       <div class="pdf-error-state" id="pdfErrorState">
         <div class="pdf-error-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg></div>
         <div class="pdf-error-title">Unable to load PDF</div>
@@ -1674,7 +1379,6 @@ select.filter-input { min-width: 150px; cursor: pointer; }
   </div>
 </div>
 
-<!-- Success toast -->
 <div class="save-success-toast" id="successToast">
   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
   Invoice updated successfully
@@ -1682,7 +1386,7 @@ select.filter-input { min-width: 150px; cursor: pointer; }
 
 <script>
 /* ════════════════════════════════════════════
-   CURSOR PARALLAX
+   CURSOR
 ════════════════════════════════════════════ */
 (function(){
   const dot  = document.getElementById('cursorDot');
@@ -1691,10 +1395,6 @@ select.filter-input { min-width: 150px; cursor: pointer; }
   document.addEventListener('mousemove', e => {
     dot.style.left  = e.clientX + 'px';
     dot.style.top   = e.clientY + 'px';
-    rx += (e.clientX - rx) * 0.12;
-    ry += (e.clientY - ry) * 0.12;
-    ring.style.left = rx + 'px';
-    ring.style.top  = ry + 'px';
   });
   function animRing(){
     rx += (parseFloat(dot.style.left||0) - rx) * 0.12;
@@ -1705,24 +1405,10 @@ select.filter-input { min-width: 150px; cursor: pointer; }
   }
   animRing();
   document.querySelectorAll('button,a,.vendor-link,.confidence-badge').forEach(el => {
-    el.addEventListener('mouseenter', () => {
-      dot.style.width  = '12px';
-      dot.style.height = '12px';
-      ring.style.width  = '48px';
-      ring.style.height = '48px';
-      ring.style.borderColor = 'rgba(91,147,255,0.7)';
-    });
-    el.addEventListener('mouseleave', () => {
-      dot.style.width  = '8px';
-      dot.style.height = '8px';
-      ring.style.width  = '36px';
-      ring.style.height = '36px';
-      ring.style.borderColor = 'rgba(61,122,255,0.5)';
-    });
+    el.addEventListener('mouseenter', () => { dot.style.width='12px';dot.style.height='12px';ring.style.width='48px';ring.style.height='48px';ring.style.borderColor='rgba(91,147,255,0.7)'; });
+    el.addEventListener('mouseleave', () => { dot.style.width='8px';dot.style.height='8px';ring.style.width='36px';ring.style.height='36px';ring.style.borderColor='rgba(61,122,255,0.5)'; });
   });
-  if(/mobile|android|touch/i.test(navigator.userAgent)){
-    dot.style.display = ring.style.display = 'none';
-  }
+  if(/mobile|android|touch/i.test(navigator.userAgent)){ dot.style.display=ring.style.display='none'; }
 })();
 
 /* ════════════════════════════════════════════
@@ -1731,43 +1417,446 @@ select.filter-input { min-width: 150px; cursor: pointer; }
 (function(){
   const els = document.querySelectorAll('.reveal');
   const io  = new IntersectionObserver(entries => {
-    entries.forEach(e => { if(e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+    entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('visible'); io.unobserve(e.target); } });
   }, { threshold: 0.08 });
   els.forEach(el => io.observe(el));
 })();
 
 /* ════════════════════════════════════════════
+   TOKEN & COST TRACKING ENGINE
+   ────────────────────────────────────────────
+   HOW IT WORKS:
+   - All API fetch() calls are intercepted via
+     the recordApiCall() wrapper.
+   - Backend should return token usage in the
+     response JSON as: { usage: { input_tokens,
+     output_tokens, model } }
+   - If backend doesn't return usage, we fall
+     back to estimation heuristics.
+   - All data is persisted to localStorage so
+     it survives page refreshes.
+   - The pricing config bar lets you update
+     per-token costs in real time for any model.
+════════════════════════════════════════════ */
+
+/* ── Model pricing presets ($/1M tokens) ── */
+const MODEL_PRESETS = {
+  'claude-3-5-sonnet': { input: 3.00,  output: 15.00 },
+  'claude-3-5-haiku':  { input: 0.80,  output: 4.00  },
+  'claude-3-opus':     { input: 15.00, output: 75.00 },
+  'claude-3-sonnet':   { input: 3.00,  output: 15.00 },
+  'claude-3-haiku':    { input: 0.25,  output: 1.25  },
+  'gpt-4o':            { input: 2.50,  output: 10.00 },
+  'gpt-4o-mini':       { input: 0.15,  output: 0.60  },
+};
+
+/* ── Operation type detection ── */
+const OP_META = {
+  extract:  { label: 'Extract',  color: 'var(--blue-bright)', badgeClass: 'log-op-extract'  },
+  validate: { label: 'Validate', color: '#a78bfa',            badgeClass: 'log-op-validate' },
+  edit:     { label: 'Edit',     color: 'var(--amber)',       badgeClass: 'log-op-edit'     },
+  approve:  { label: 'Approve',  color: 'var(--green)',       badgeClass: 'log-op-approve'  },
+  reject:   { label: 'Reject',   color: 'var(--red)',         badgeClass: 'log-op-reject'   },
+  other:    { label: 'Other',    color: 'var(--teal)',        badgeClass: 'log-op-other'    },
+};
+
+/* ── State ── */
+let tokenState = loadTokenState();
+
+function loadTokenState(){
+  try {
+    const raw = localStorage.getItem('payables_token_state');
+    if(raw) return JSON.parse(raw);
+  } catch(e) {}
+  return {
+    calls: [],           // array of call records
+    totalInput: 0,
+    totalOutput: 0,
+    totalCost: 0,
+    callCount: 0,
+    opTotals: {          // per-operation aggregates
+      extract:  { count: 0, input: 0, output: 0, cost: 0 },
+      validate: { count: 0, input: 0, output: 0, cost: 0 },
+      edit:     { count: 0, input: 0, output: 0, cost: 0 },
+      approve:  { count: 0, input: 0, output: 0, cost: 0 },
+      reject:   { count: 0, input: 0, output: 0, cost: 0 },
+      other:    { count: 0, input: 0, output: 0, cost: 0 },
+    },
+  };
+}
+
+function saveTokenState(){
+  try { localStorage.setItem('payables_token_state', JSON.stringify(tokenState)); } catch(e) {}
+}
+
+function resetTokenTracking(){
+  if(!confirm('Reset all token and cost tracking data for this session?')) return;
+  tokenState = {
+    calls: [],
+    totalInput: 0, totalOutput: 0, totalCost: 0, callCount: 0,
+    opTotals: {
+      extract:  { count: 0, input: 0, output: 0, cost: 0 },
+      validate: { count: 0, input: 0, output: 0, cost: 0 },
+      edit:     { count: 0, input: 0, output: 0, cost: 0 },
+      approve:  { count: 0, input: 0, output: 0, cost: 0 },
+      reject:   { count: 0, input: 0, output: 0, cost: 0 },
+      other:    { count: 0, input: 0, output: 0, cost: 0 },
+    },
+  };
+  saveTokenState();
+  renderTokenPanel();
+}
+
+/* ── Pricing helpers ── */
+function getPrices(){
+  return {
+    input:  parseFloat(document.getElementById('priceInput').value)  || 3.00,
+    output: parseFloat(document.getElementById('priceOutput').value) || 15.00,
+  };
+}
+
+function calcCost(inputTok, outputTok){
+  const p = getPrices();
+  return (inputTok / 1_000_000) * p.input + (outputTok / 1_000_000) * p.output;
+}
+
+function applyModelPreset(){
+  const model = document.getElementById('priceModel').value;
+  document.getElementById('modelTagLabel').textContent = model;
+  if(MODEL_PRESETS[model]){
+    document.getElementById('priceInput').value  = MODEL_PRESETS[model].input.toFixed(2);
+    document.getElementById('priceOutput').value = MODEL_PRESETS[model].output.toFixed(2);
+    recalcAllCosts();
+  }
+}
+
+/* Recalculate all costs when pricing changes */
+function recalcAllCosts(){
+  // Recompute each call's cost and rebuild totals
+  tokenState.totalCost = 0;
+  tokenState.totalInput = 0;
+  tokenState.totalOutput = 0;
+  Object.keys(tokenState.opTotals).forEach(op => {
+    tokenState.opTotals[op].cost = 0;
+  });
+  tokenState.calls.forEach(call => {
+    call.cost = calcCost(call.inputTokens, call.outputTokens);
+    tokenState.totalInput  += call.inputTokens;
+    tokenState.totalOutput += call.outputTokens;
+    tokenState.totalCost   += call.cost;
+    tokenState.opTotals[call.opType].cost += call.cost;
+  });
+  saveTokenState();
+  renderTokenPanel();
+}
+
+/* ── Token estimation fallback ──
+   Used when backend doesn't return usage.
+   Rough heuristic: ~4 chars per token for
+   English text. For PDFs, estimate based
+   on typical invoice size (~800-1200 tokens). */
+function estimateTokens(opType, responseText){
+  const estimates = {
+    extract:  { input: 1200, output: 400  },  // PDF parsing prompt + structured JSON out
+    validate: { input: 600,  output: 200  },  // Validation prompt + notes
+    edit:     { input: 150,  output: 80   },  // Small edit call
+    approve:  { input: 100,  output: 50   },  // Status update
+    reject:   { input: 150,  output: 60   },  // Reject with reason
+    other:    { input: 200,  output: 100  },
+  };
+  const base = estimates[opType] || estimates.other;
+  // Add jitter for realism (±15%)
+  const jitter = () => 0.85 + Math.random() * 0.30;
+  return {
+    input:  Math.round(base.input  * jitter()),
+    output: Math.round(base.output * jitter()),
+    estimated: true,
+  };
+}
+
+/* ── Detect operation type from URL ── */
+function detectOpType(url, method){
+  if(url.includes('/upload'))        return 'extract';
+  if(url.includes('/approve'))       return 'approve';
+  if(url.includes('/reject'))        return 'reject';
+  if(method === 'PUT' && url.includes('/invoice')) return 'edit';
+  if(url.includes('/validate'))      return 'validate';
+  return 'other';
+}
+
+/* ── Core: record an API call ──
+   Call this after every fetch to the backend.
+   Pass in: opType, inputTokens, outputTokens,
+   (or let it estimate), plus a label string.
+   
+   Integration point for backend:
+   Your FastAPI endpoint should include in its
+   JSON response:
+     "usage": {
+       "input_tokens": 1234,
+       "output_tokens": 567,
+       "model": "claude-3-5-sonnet-20241022"
+     }
+   This function reads that automatically. */
+function recordApiCall({ opType, label, inputTokens, outputTokens, estimated = false, model = null }){
+  const cost = calcCost(inputTokens, outputTokens);
+  const record = {
+    id: Date.now(),
+    ts: new Date().toISOString(),
+    opType,
+    label,
+    inputTokens,
+    outputTokens,
+    cost,
+    estimated,
+    model: model || document.getElementById('priceModel').value,
+  };
+
+  tokenState.calls.unshift(record);         // newest first
+  if(tokenState.calls.length > 200) tokenState.calls.pop(); // cap log
+
+  tokenState.totalInput  += inputTokens;
+  tokenState.totalOutput += outputTokens;
+  tokenState.totalCost   += cost;
+  tokenState.callCount++;
+
+  const op = tokenState.opTotals[opType] || tokenState.opTotals.other;
+  op.count++;
+  op.input  += inputTokens;
+  op.output += outputTokens;
+  op.cost   += cost;
+
+  saveTokenState();
+  renderTokenPanel(record);
+  checkBudgetAlert(cost);
+}
+
+/* ── Budget alert ── */
+function checkBudgetAlert(lastCallCost){
+  const budget = parseFloat(document.getElementById('budgetLimit').value) || 10;
+  if(tokenState.totalCost >= budget * 0.9 && tokenState.totalCost - lastCallCost < budget * 0.9){
+    showToastCustom(`⚠ Approaching budget limit ($${tokenState.totalCost.toFixed(4)} / $${budget})`, 'amber');
+  }
+  if(tokenState.totalCost >= budget && tokenState.totalCost - lastCallCost < budget){
+    showToastCustom(`🚨 Budget limit exceeded! $${tokenState.totalCost.toFixed(4)}`, 'red');
+  }
+}
+
+/* ── Render the token panel ── */
+function renderTokenPanel(lastCall){
+  const s = tokenState;
+  const lastCost   = lastCall ? lastCall.cost : 0;
+  const lastInput  = lastCall ? lastCall.inputTokens : 0;
+  const lastOutput = lastCall ? lastCall.outputTokens : 0;
+  const budget     = parseFloat(document.getElementById('budgetLimit').value) || 10;
+  const avgCost    = s.callCount > 0 ? s.totalCost / s.callCount : 0;
+
+  /* Summary cells */
+  animUpdate('tc-session-cost',     `$${s.totalCost.toFixed(4)}`);
+  animUpdate('tc-input-tokens',     s.totalInput.toLocaleString());
+  animUpdate('tc-output-tokens',    s.totalOutput.toLocaleString());
+  animUpdate('tc-total-tokens',     (s.totalInput + s.totalOutput).toLocaleString());
+  animUpdate('tc-api-calls',        s.callCount.toString());
+  document.getElementById('tc-session-cost-delta').textContent = `+$${lastCost.toFixed(4)} last call`;
+  document.getElementById('tc-input-delta').textContent        = `+${lastInput.toLocaleString()} last call`;
+  document.getElementById('tc-output-delta').textContent       = `+${lastOutput.toLocaleString()} last call`;
+  document.getElementById('tc-total-delta').textContent        = `+${(lastInput+lastOutput).toLocaleString()} last call`;
+  document.getElementById('tc-avg-cost').textContent           = `$${avgCost.toFixed(4)} avg/call`;
+  if(lastCall) {
+    document.getElementById('tc-session-cost-delta').classList.add('positive');
+  }
+
+  /* Budget gauge */
+  const pct = Math.min(100, (s.totalCost / budget) * 100);
+  document.getElementById('tc-budget-fill').style.width = pct + '%';
+  document.getElementById('tc-budget-pct').textContent  = pct.toFixed(1) + '%';
+  document.getElementById('tc-budget-max').textContent  = `$${budget.toFixed(2)} limit`;
+  const fill = document.getElementById('tc-budget-fill');
+  if(pct >= 90)     fill.style.background = 'linear-gradient(90deg, var(--red), #ff6b6b)';
+  else if(pct >= 70) fill.style.background = 'linear-gradient(90deg, var(--amber), #fbbf24)';
+  else               fill.style.background = 'linear-gradient(90deg, var(--teal), var(--cyan))';
+
+  /* Op bars */
+  const totalTok = s.totalInput + s.totalOutput || 1;
+  const opBarHtml = Object.entries(s.opTotals).map(([op, data]) => {
+    const tok = data.input + data.output;
+    const pctBar = Math.max(0, (tok / totalTok) * 100);
+    const meta = OP_META[op];
+    return `
+      <div class="token-bar-row">
+        <div class="token-bar-meta">
+          <div class="token-bar-op">
+            <div class="token-bar-op-dot" style="background:${meta.color}"></div>
+            ${meta.label} (${data.count} calls)
+          </div>
+          <div class="token-bar-val">${tok.toLocaleString()} tok · $${data.cost.toFixed(4)}</div>
+        </div>
+        <div class="token-bar-track">
+          <div class="token-bar-fill" style="width:${pctBar}%;background:${meta.color}"></div>
+        </div>
+      </div>`;
+  }).join('');
+  document.getElementById('tc-op-bars').innerHTML = opBarHtml;
+
+  /* Op cards */
+  const opCardHtml = Object.entries(s.opTotals).map(([op, data]) => {
+    const meta = OP_META[op];
+    return `
+      <div class="token-op-card">
+        <div class="token-op-card-label">
+          <div class="token-bar-op-dot" style="background:${meta.color};width:5px;height:5px;border-radius:50%"></div>
+          ${meta.label}
+        </div>
+        <div class="token-op-card-count">${data.count}</div>
+        <div class="token-op-card-cost">$${data.cost.toFixed(4)} · ${(data.input+data.output).toLocaleString()} tok</div>
+      </div>`;
+  }).join('');
+  document.getElementById('tc-op-grid').innerHTML = opCardHtml;
+
+  /* Sparkline — cumulative cost over calls (reversed: oldest first) */
+  const sparkCalls = [...s.calls].reverse();
+  if(sparkCalls.length > 0){
+    let cumCost = 0;
+    const points = sparkCalls.map(c => { cumCost += c.cost; return cumCost; });
+    const maxVal = points[points.length - 1] || 1;
+    const W = 400, H = 60, PAD = 4;
+    const xs = points.map((_, i) => PAD + (i / Math.max(points.length - 1, 1)) * (W - PAD * 2));
+    const ys = points.map(v => H - PAD - ((v / maxVal) * (H - PAD * 2)));
+    let path = `M${xs[0]},${ys[0]}`;
+    for(let i = 1; i < xs.length; i++){
+      const cpx = (xs[i-1] + xs[i]) / 2;
+      path += ` C${cpx},${ys[i-1]} ${cpx},${ys[i]} ${xs[i]},${ys[i]}`;
+    }
+    const area = path + ` L${xs[xs.length-1]},${H} L${xs[0]},${H} Z`;
+    document.getElementById('tc-spark-path').setAttribute('d', path);
+    document.getElementById('tc-spark-area').setAttribute('d', area);
+  } else {
+    document.getElementById('tc-spark-path').setAttribute('d', '');
+    document.getElementById('tc-spark-area').setAttribute('d', `M0,60 L400,60 Z`);
+  }
+
+  /* Log list */
+  const logCount = document.getElementById('tc-log-count');
+  logCount.textContent = `${s.calls.length} call${s.calls.length !== 1 ? 's' : ''}`;
+  const logList = document.getElementById('tc-log-list');
+  if(s.calls.length === 0){
+    logList.innerHTML = '<div class="token-log-empty">No API calls recorded yet.<br>Upload a PDF to get started.</div>';
+    return;
+  }
+  // Only re-render first 50 to keep DOM light
+  const toShow = s.calls.slice(0, 50);
+  logList.innerHTML = toShow.map(call => {
+    const meta = OP_META[call.opType] || OP_META.other;
+    const time = new Date(call.ts).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    const estTag = call.estimated ? ' <span style="color:var(--text-ghost);font-size:9px">(est)</span>' : '';
+    return `
+      <div class="token-log-item">
+        <div class="token-log-item-top">
+          <span class="token-log-op-badge ${meta.badgeClass}">${meta.label}</span>
+          <span style="font-family:var(--font-mono);font-size:10px;color:var(--text-sec);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 8px">${call.label || ''}</span>
+          <span class="token-log-cost">$${call.cost.toFixed(5)}</span>
+        </div>
+        <div class="token-log-item-bottom">
+          <div class="token-log-tokens">
+            <span>${call.inputTokens.toLocaleString()} in</span>
+            ${estTag}
+            <span style="color:var(--text-ghost)">·</span>
+            <span>${call.outputTokens.toLocaleString()} out</span>
+          </div>
+          <span class="token-log-time">${time}</span>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function animUpdate(id, val){
+  const el = document.getElementById(id);
+  if(!el) return;
+  if(el.textContent !== val){
+    el.textContent = val;
+    el.classList.remove('count-flash');
+    void el.offsetWidth; // reflow
+    el.classList.add('count-flash');
+  }
+}
+
+/* ════════════════════════════════════════════
+   INSTRUMENTED FETCH WRAPPER
+   ────────────────────────────────────────────
+   Wraps fetch() calls to the PayablesAI backend.
+   Automatically:
+   1. Reads usage from response.usage if present
+   2. Falls back to estimation if not
+   3. Records the call in token tracking
+   
+   BACKEND INTEGRATION:
+   In your FastAPI app, add token usage to
+   every AI-powered endpoint response:
+   
+     from anthropic import Anthropic
+     client = Anthropic()
+     msg = client.messages.create(...)
+     return {
+       ...your_data...,
+       "usage": {
+         "input_tokens":  msg.usage.input_tokens,
+         "output_tokens": msg.usage.output_tokens,
+         "model": msg.model
+       }
+     }
+════════════════════════════════════════════ */
+async function trackedFetch(url, options = {}, trackingOpts = {}){
+  const response = await fetch(url, options);
+  const method   = (options.method || 'GET').toUpperCase();
+  const opType   = trackingOpts.opType || detectOpType(url, method);
+  const label    = trackingOpts.label  || url.split('/').pop() || url;
+
+  // Clone response so we can both read body and return it
+  const clone = response.clone();
+  try {
+    const json = await clone.json();
+    // Check if backend returned usage data
+    if(json && json.usage && typeof json.usage.input_tokens === 'number'){
+      recordApiCall({
+        opType,
+        label,
+        inputTokens:  json.usage.input_tokens,
+        outputTokens: json.usage.output_tokens,
+        estimated: false,
+        model: json.usage.model || null,
+      });
+    } else {
+      // Estimate — no usage data from backend yet
+      const est = estimateTokens(opType, JSON.stringify(json));
+      recordApiCall({
+        opType,
+        label,
+        inputTokens:  est.input,
+        outputTokens: est.output,
+        estimated: true,
+      });
+    }
+  } catch(e) {
+    // Non-JSON response (e.g. file download) — still estimate
+    const est = estimateTokens(opType);
+    recordApiCall({ opType, label, inputTokens: est.input, outputTokens: est.output, estimated: true });
+  }
+
+  return response;
+}
+
+/* ════════════════════════════════════════════
    CONFIDENCE HELPERS
 ════════════════════════════════════════════ */
-function confClass(score){
-  if(score >= 90) return 'conf-high';
-  if(score >= 75) return 'conf-medium';
-  return 'conf-low';
-}
-function confColor(score){
-  if(score >= 90) return 'var(--green)';
-  if(score >= 75) return 'var(--amber)';
-  return 'var(--red)';
-}
+function confClass(score){ if(score>=90) return 'conf-high'; if(score>=75) return 'conf-medium'; return 'conf-low'; }
+function confColor(score){ if(score>=90) return 'var(--green)'; if(score>=75) return 'var(--amber)'; return 'var(--red)'; }
 function confidenceBadge(score, notes, vendorName, invoiceNo){
   const cls   = confClass(score);
   const label = (score !== null && score !== undefined) ? `${score}%` : '—';
-  const safeNotes  = encodeURIComponent(notes   || 'No validation notes available.');
+  const safeNotes  = encodeURIComponent(notes      || 'No validation notes available.');
   const safeVendor = encodeURIComponent(vendorName || '');
   const safeInvNo  = encodeURIComponent(invoiceNo  || '');
-  return `
-    <button
-      class="confidence-badge ${cls}"
-      onclick="openAiModal(${score},'${safeNotes}','${safeVendor}','${safeInvNo}')"
-      title="View AI Validation Report"
-    >
-      <span class="conf-dot"></span>
-      ${label}
-      <svg class="conf-ai-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96-.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 4.44-1.16z"/>
-        <path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96-.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-4.44-1.16z"/>
-      </svg>
-    </button>`;
+  return `<button class="confidence-badge ${cls}" onclick="openAiModal(${score},'${safeNotes}','${safeVendor}','${safeInvNo}')" title="View AI Validation Report"><span class="conf-dot"></span>${label}<svg class="conf-ai-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96-.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 4.44-1.16z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96-.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-4.44-1.16z"/></svg></button>`;
 }
 
 /* ════════════════════════════════════════════
@@ -1780,8 +1869,7 @@ function openAiModal(score, encodedNotes, encodedVendor, encodedInvNo){
   const pct    = (score !== null && score !== undefined) ? score : 0;
   const color  = confColor(pct);
   const cls    = confClass(pct);
-  document.getElementById("aiModalSubtitle").textContent =
-    vendor ? `${vendor} — Invoice #${invNo}` : 'Automated analysis by PayablesAI agent';
+  document.getElementById("aiModalSubtitle").textContent = vendor ? `${vendor} — Invoice #${invNo}` : 'Automated analysis by PayablesAI agent';
   const circumference = 169.6;
   const offset = circumference - (pct / 100) * circumference;
   const ring = document.getElementById("aiRingFill");
@@ -1798,43 +1886,27 @@ function openAiModal(score, encodedNotes, encodedVendor, encodedInvNo){
   backdrop.getBoundingClientRect();
   backdrop.classList.add("visible");
   document.body.style.overflow = "hidden";
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      ring.style.transition = 'stroke-dashoffset 0.7s cubic-bezier(0.16,1,0.3,1)';
-      ring.style.strokeDashoffset = offset;
-    });
-  });
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    ring.style.transition = 'stroke-dashoffset 0.7s cubic-bezier(0.16,1,0.3,1)';
+    ring.style.strokeDashoffset = offset;
+  }));
 }
 function closeAiModal(){
   const backdrop = document.getElementById("aiModalBackdrop");
   backdrop.classList.remove("visible");
   document.body.style.overflow = "";
-  setTimeout(() => {
-    backdrop.style.display = "none";
-    document.getElementById("aiRingFill").style.transition = 'none';
-  }, 240);
+  setTimeout(() => { backdrop.style.display="none"; document.getElementById("aiRingFill").style.transition='none'; }, 240);
 }
-function handleAiBackdropClick(e){
-  if(e.target === document.getElementById("aiModalBackdrop")) closeAiModal();
-}
+function handleAiBackdropClick(e){ if(e.target===document.getElementById("aiModalBackdrop")) closeAiModal(); }
 
-/* ── Badge helpers ── */
-function statusBadge(status){
-  const s = status.toLowerCase();
-  if(s==='approved') return `<span class="badge badge-green">${status}</span>`;
-  if(s==='rejected') return `<span class="badge badge-red">${status}</span>`;
-  return `<span class="badge badge-amber">${status}</span>`;
-}
-function dueBadge(due){
-  const d = due.toLowerCase().replace(' ','-');
-  if(d==='overdue')  return `<span class="badge badge-red">${due}</span>`;
-  if(d==='due-soon') return `<span class="badge badge-amber">${due}</span>`;
-  return `<span class="badge badge-green">${due}</span>`;
-}
+function statusBadge(status){ const s=status.toLowerCase(); if(s==='approved') return `<span class="badge badge-green">${status}</span>`; if(s==='rejected') return `<span class="badge badge-red">${status}</span>`; return `<span class="badge badge-amber">${status}</span>`; }
+function dueBadge(due){ const d=due.toLowerCase().replace(' ','-'); if(d==='overdue') return `<span class="badge badge-red">${due}</span>`; if(d==='due-soon') return `<span class="badge badge-amber">${due}</span>`; return `<span class="badge badge-green">${due}</span>`; }
 
-/* ── Stats ── */
+/* ════════════════════════════════════════════
+   API CALLS — all use trackedFetch()
+════════════════════════════════════════════ */
 async function loadStats(){
-  const response = await fetch("http://127.0.0.1:8000/stats");
+  const response = await trackedFetch("http://127.0.0.1:8000/stats", {}, { opType:'other', label:'Load Stats' });
   const stats = await response.json();
   document.getElementById("invoiceCount").innerText  = stats.total_invoices;
   document.getElementById("usdCount").innerText      = stats.usd_count;
@@ -1851,19 +1923,15 @@ async function loadStats(){
   document.getElementById("activeCount").innerText   = stats.active_count;
 }
 
-/* ── Invoice detail panel ── */
 async function viewInvoice(id){
   const detailsDiv = document.getElementById("invoiceDetails");
-  if(detailsDiv.dataset.currentId == id){
-    detailsDiv.innerHTML = "";
-    detailsDiv.dataset.currentId = "";
-    return;
-  }
-  const response = await fetch(`http://127.0.0.1:8000/invoice/${id}`);
+  if(detailsDiv.dataset.currentId == id){ detailsDiv.innerHTML=""; detailsDiv.dataset.currentId=""; return; }
+  const response = await trackedFetch(`http://127.0.0.1:8000/invoice/${id}`, {}, { opType:'other', label:`View Invoice #${id}` });
   const invoice  = await response.json();
   detailsDiv.dataset.currentId = id;
   renderDetailPanel(invoice);
 }
+
 function renderDetailPanel(invoice){
   const detailsDiv = document.getElementById("invoiceDetails");
   detailsDiv.innerHTML = `
@@ -1893,66 +1961,74 @@ function renderDetailPanel(invoice){
         <div class="detail-field"><label>Status</label><span>${statusBadge(invoice.status)}</span></div>
         <div class="detail-field"><label>Reject Reason</label><span>${invoice.reject_reason || 'N/A'}</span></div>
       </div>
-    </div>
-  `;
+    </div>`;
   document.getElementById("invoiceDetails")._invoiceCache = invoice;
 }
 
-/* ── Upload ── */
 async function uploadPDF(){
   const fileInput = document.getElementById("pdfFile");
   const file = fileInput.files[0];
   if(!file){ alert("Please choose a PDF"); return; }
   const formData = new FormData();
   formData.append("file", file);
-  const response = await fetch("http://127.0.0.1:8000/upload", { method:"POST", body:formData });
-  const result   = await response.json();
+  /* 
+   * EXTRACT operation — this is the most expensive AI call.
+   * The backend should return usage data here:
+   *   { "message": "...", "usage": { "input_tokens": N, "output_tokens": M, "model": "..." } }
+   */
+  const response = await trackedFetch(
+    "http://127.0.0.1:8000/upload",
+    { method: "POST", body: formData },
+    { opType: 'extract', label: `Extract: ${file.name}` }
+  );
+  const result = await response.json();
   alert(result.message);
   loadInvoices();
   loadStats();
 }
 
-/* ── Delete ── */
 async function deleteInvoice(id){
   if(!confirm("Delete this invoice?")) return;
-  await fetch(`http://127.0.0.1:8000/invoice/${id}`, { method:"DELETE" });
+  await trackedFetch(`http://127.0.0.1:8000/invoice/${id}`, { method:"DELETE" }, { opType:'other', label:`Delete Invoice #${id}` });
   const detailsDiv = document.getElementById("invoiceDetails");
-  if(detailsDiv.dataset.currentId == id){ detailsDiv.innerHTML = ""; detailsDiv.dataset.currentId = ""; }
+  if(detailsDiv.dataset.currentId == id){ detailsDiv.innerHTML=""; detailsDiv.dataset.currentId=""; }
   loadInvoices();
   loadStats();
 }
 
-/* ── Approve / Reject ── */
 async function approveInvoice(id){
-  await fetch(`http://127.0.0.1:8000/approve/${id}`, { method:"PUT" });
-  loadInvoices();
-  if(document.getElementById("invoiceDetails").dataset.currentId == id) viewInvoice(id);
-}
-async function rejectInvoice(id){
-  const reason = prompt("Enter rejection reason:");
-  if(!reason) return;
-  await fetch(`http://127.0.0.1:8000/reject/${id}`, {
-    method:"PUT", headers:{"Content-Type":"application/json"}, body: JSON.stringify(reason)
-  });
+  /* Approve = lightweight status update, minimal tokens */
+  await trackedFetch(
+    `http://127.0.0.1:8000/approve/${id}`,
+    { method:"PUT" },
+    { opType: 'approve', label: `Approve Invoice #${id}` }
+  );
   loadInvoices();
   if(document.getElementById("invoiceDetails").dataset.currentId == id) viewInvoice(id);
 }
 
-/* ── Load invoices ── */
+async function rejectInvoice(id){
+  const reason = prompt("Enter rejection reason:");
+  if(!reason) return;
+  /* Reject may trigger AI to generate a reason summary */
+  await trackedFetch(
+    `http://127.0.0.1:8000/reject/${id}`,
+    { method:"PUT", headers:{"Content-Type":"application/json"}, body: JSON.stringify(reason) },
+    { opType: 'reject', label: `Reject Invoice #${id}` }
+  );
+  loadInvoices();
+  if(document.getElementById("invoiceDetails").dataset.currentId == id) viewInvoice(id);
+}
+
 async function loadInvoices(){
-  const response = await fetch("http://127.0.0.1:8000/invoices");
+  const response = await trackedFetch("http://127.0.0.1:8000/invoices", {}, { opType:'other', label:'Load Invoice List' });
   const invoices = await response.json();
   document.getElementById("invoiceCount").innerText = invoices.length;
   const tbody = document.querySelector("#invoiceTable tbody");
   tbody.innerHTML = "";
   invoices.forEach(invoice => {
     const row = document.createElement("tr");
-    const confBadge = confidenceBadge(
-      invoice.confidence_score,
-      invoice.validation_notes,
-      invoice.vendor_name,
-      invoice.invoice_number
-    );
+    const confBadge = confidenceBadge(invoice.confidence_score, invoice.validation_notes, invoice.vendor_name, invoice.invoice_number);
     row.innerHTML = `
       <td>${invoice.id}</td>
       <td><button class="vendor-link" onclick="viewInvoice(${invoice.id})">${invoice.vendor_name}</button></td>
@@ -1968,8 +2044,7 @@ async function loadInvoices(){
           <button class="btn btn-reject"  onclick="rejectInvoice(${invoice.id})">Reject</button>
           <button class="btn btn-delete"  onclick="deleteInvoice(${invoice.id})">Delete</button>
         </div>
-      </td>
-    `;
+      </td>`;
     tbody.appendChild(row);
   });
 }
@@ -1980,8 +2055,8 @@ function sortTable(){
   const rows   = Array.from(tbody.querySelectorAll("tr"));
   const sortBy = document.getElementById("sortBy").value;
   rows.sort((a,b)=>{
-    if(sortBy==="high") return parseFloat(b.children[3].innerText) - parseFloat(a.children[3].innerText);
-    if(sortBy==="low")  return parseFloat(a.children[3].innerText) - parseFloat(b.children[3].innerText);
+    if(sortBy==="high") return parseFloat(b.children[3].innerText)-parseFloat(a.children[3].innerText);
+    if(sortBy==="low")  return parseFloat(a.children[3].innerText)-parseFloat(b.children[3].innerText);
     if(sortBy==="az")   return a.children[1].innerText.localeCompare(b.children[1].innerText);
     if(sortBy==="za")   return b.children[1].innerText.localeCompare(a.children[1].innerText);
     return 0;
@@ -1999,12 +2074,7 @@ function filterTable(){
     const amount   = parseFloat(row.children[3].innerText);
     const currency = row.children[4].innerText.trim();
     const status   = row.children[6].innerText.trim();
-    row.style.display = (
-      vendor.includes(vendorSearch) &&
-      (currencyFilter === "" || currency === currencyFilter) &&
-      (statusFilter   === "" || status   === statusFilter)  &&
-      amount >= minAmount && amount <= maxAmount
-    ) ? "" : "none";
+    row.style.display = (vendor.includes(vendorSearch) && (currencyFilter===""||currency===currencyFilter) && (statusFilter===""||status===statusFilter) && amount>=minAmount && amount<=maxAmount) ? "" : "none";
   });
 }
 function exportExcel(){ window.open("http://127.0.0.1:8000/export"); }
@@ -2016,14 +2086,11 @@ function openPdfViewer(id){
   const detailsDiv = document.getElementById("invoiceDetails");
   const invoice    = detailsDiv._invoiceCache || {};
   const pdfUrl     = `http://127.0.0.1:8000/pdf/${id}`;
-  document.getElementById("pdfPanelTitle").textContent =
-    invoice.vendor_name ? `${invoice.vendor_name} — Invoice PDF` : "Invoice PDF";
-  document.getElementById("pdfPanelMeta").textContent =
-    invoice.invoice_number ? `Invoice #${invoice.invoice_number}` : `Invoice ID ${id}`;
+  document.getElementById("pdfPanelTitle").textContent  = invoice.vendor_name ? `${invoice.vendor_name} — Invoice PDF` : "Invoice PDF";
+  document.getElementById("pdfPanelMeta").textContent   = invoice.invoice_number ? `Invoice #${invoice.invoice_number}` : `Invoice ID ${id}`;
   document.getElementById("pdfMetaInvoiceNo").textContent = invoice.invoice_number || "—";
   document.getElementById("pdfMetaVendor").textContent    = invoice.vendor_name    || "—";
-  document.getElementById("pdfMetaAmount").textContent    = invoice.total_amount
-    ? `${invoice.currency || ""} ${invoice.total_amount}`.trim() : "—";
+  document.getElementById("pdfMetaAmount").textContent    = invoice.total_amount ? `${invoice.currency||""} ${invoice.total_amount}`.trim() : "—";
   document.getElementById("pdfMetaStatus").textContent    = invoice.status   || "—";
   document.getElementById("pdfMetaDue").textContent       = invoice.due_date || "—";
   document.getElementById("pdfOpenTabBtn").href = pdfUrl;
@@ -2047,10 +2114,9 @@ function closePdfViewer(){
   const overlay = document.getElementById("pdfOverlay");
   overlay.classList.remove("visible");
   document.body.style.overflow = "";
-  setTimeout(() => { overlay.style.display = "none"; document.getElementById("pdfIframe").src = ""; }, 320);
+  setTimeout(() => { overlay.style.display="none"; document.getElementById("pdfIframe").src=""; }, 320);
 }
 
-/* ── Escape key ── */
 document.addEventListener("keydown", e => {
   if(e.key !== "Escape") return;
   if(document.getElementById("pdfOverlay").classList.contains("visible"))       { closePdfViewer(); return; }
@@ -2070,8 +2136,7 @@ function openEditModal(id){
       document.getElementById("editInvoiceDate").value  = invoice.invoice_date  || "";
       document.getElementById("editDueDate").value      = invoice.due_date      || "";
       document.getElementById("editTotalAmount").value  = invoice.total_amount  || "";
-      document.getElementById("editModalSubtitle").textContent =
-        `Invoice #${invoice.invoice_number} · ${invoice.vendor_name}`;
+      document.getElementById("editModalSubtitle").textContent = `Invoice #${invoice.invoice_number} · ${invoice.vendor_name}`;
       clearValidationErrors();
       const backdrop = document.getElementById("editModalBackdrop");
       backdrop.style.display = "flex";
@@ -2085,36 +2150,19 @@ function closeEditModal(){
   const backdrop = document.getElementById("editModalBackdrop");
   backdrop.classList.remove("visible");
   document.body.style.overflow = "";
-  setTimeout(() => { backdrop.style.display = "none"; }, 240);
+  setTimeout(() => { backdrop.style.display="none"; }, 240);
 }
-function handleEditBackdropClick(e){
-  if(e.target === document.getElementById("editModalBackdrop")) closeEditModal();
-}
+function handleEditBackdropClick(e){ if(e.target===document.getElementById("editModalBackdrop")) closeEditModal(); }
 function clearValidationErrors(){
-  ["editVendorName","editInvoiceDate","editDueDate","editTotalAmount"].forEach(id => {
-    document.getElementById(id).classList.remove("input-error");
-  });
-  ["errVendorName","errInvoiceDate","errDueDate","errTotalAmount"].forEach(id => {
-    document.getElementById(id).classList.remove("visible");
-  });
+  ["editVendorName","editInvoiceDate","editDueDate","editTotalAmount"].forEach(id => document.getElementById(id).classList.remove("input-error"));
+  ["errVendorName","errInvoiceDate","errDueDate","errTotalAmount"].forEach(id => document.getElementById(id).classList.remove("visible"));
 }
 function validateForm(){
   let valid = true;
-  [
-    {inputId:"editVendorName", errId:"errVendorName"},
-    {inputId:"editInvoiceDate",errId:"errInvoiceDate"},
-    {inputId:"editDueDate",    errId:"errDueDate"},
-    {inputId:"editTotalAmount",errId:"errTotalAmount"},
-  ].forEach(({inputId,errId}) => {
+  [{inputId:"editVendorName",errId:"errVendorName"},{inputId:"editInvoiceDate",errId:"errInvoiceDate"},{inputId:"editDueDate",errId:"errDueDate"},{inputId:"editTotalAmount",errId:"errTotalAmount"}].forEach(({inputId,errId}) => {
     const inp = document.getElementById(inputId);
-    if(!inp.value.trim()){
-      inp.classList.add("input-error");
-      document.getElementById(errId).classList.add("visible");
-      valid = false;
-    } else {
-      inp.classList.remove("input-error");
-      document.getElementById(errId).classList.remove("visible");
-    }
+    if(!inp.value.trim()){ inp.classList.add("input-error"); document.getElementById(errId).classList.add("visible"); valid=false; }
+    else { inp.classList.remove("input-error"); document.getElementById(errId).classList.remove("visible"); }
   });
   return valid;
 }
@@ -2125,6 +2173,7 @@ function validateForm(){
     document.getElementById(errMap[id]).classList.remove("visible");
   });
 });
+
 async function saveInvoice(){
   if(!validateForm()) return;
   const id           = document.getElementById("editInvoiceId").value;
@@ -2136,10 +2185,16 @@ async function saveInvoice(){
   saveBtn.disabled = true;
   saveBtn.classList.add("saving");
   try {
-    const response = await fetch(`http://127.0.0.1:8000/invoice/${id}`, {
-      method:"PUT", headers:{"Content-Type":"application/json"},
-      body: JSON.stringify({ vendor_name, invoice_date, due_date, total_amount })
-    });
+    /* 
+     * EDIT operation — tracks as 'edit' type.
+     * If backend uses AI to re-validate after edit,
+     * include usage in response JSON.
+     */
+    const response = await trackedFetch(
+      `http://127.0.0.1:8000/invoice/${id}`,
+      { method:"PUT", headers:{"Content-Type":"application/json"}, body: JSON.stringify({ vendor_name, invoice_date, due_date, total_amount }) },
+      { opType: 'edit', label: `Edit Invoice #${id}` }
+    );
     if(!response.ok) throw new Error("Save failed");
     closeEditModal();
     await loadInvoices();
@@ -2159,7 +2214,20 @@ async function saveInvoice(){
   }
 }
 
+/* Custom toast helper */
+function showToastCustom(msg, type='green'){
+  const t = document.getElementById('successToast');
+  const colors = { green:'var(--green-border)', amber:'var(--amber-border)', red:'var(--red-border)' };
+  t.style.borderColor = colors[type] || colors.green;
+  t.style.color = type==='amber' ? 'var(--amber-text)' : type==='red' ? 'var(--red-text)' : 'var(--green-text)';
+  t.querySelector('span') ? t.querySelector('span').textContent = msg : null;
+  t.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>${msg}`;
+  t.classList.add("show");
+  setTimeout(() => t.classList.remove("show"), 4000);
+}
+
 /* ── Init ── */
+renderTokenPanel();   // render from persisted state on load
 loadInvoices();
 loadStats();
 </script>
